@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "clean": "rm -rf .next node_modules",
+    "production:build": "pnpm clean && pnpm install && pnpm build"
   },
   "dependencies": {
     "@hookform/resolvers": "latest",

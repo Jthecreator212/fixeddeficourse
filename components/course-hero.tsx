@@ -2,6 +2,333 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+
+// Separate component for particles with stable values
+const Particle = ({ index, type }: { index: number; type: 'standard' | 'glow' | 'horizontal' }) => {
+  const [mounted, setMounted] = useState(false)
+  const [position, setPosition] = useState({ top: 0, left: 0 })
+  const [animation, setAnimation] = useState('')
+
+  useEffect(() => {
+    setMounted(true)
+    // Generate stable random values on client side
+    const top = Math.random() * 100
+    const left = Math.random() * 100
+    const delay = Math.random() * 5
+    const duration = 3 + Math.random() * 4
+
+    setPosition({ top, left })
+    
+    if (type === 'standard') {
+      setAnimation(`particle ${duration}s linear infinite ${delay}s`)
+    } else if (type === 'glow') {
+      setAnimation(`particleGlow ${5 + Math.random() * 5}s ease-in-out infinite ${delay}s`)
+    } else {
+      setAnimation(`particleHorizontal ${10 + Math.random() * 15}s linear infinite ${delay}s`)
+    }
+  }, [type])
+
+  const className = type === 'standard' 
+    ? "absolute h-1 w-1 rounded-full bg-primary/30"
+    : type === 'glow'
+    ? "absolute h-2 w-2 rounded-full bg-blue-400/20 blur-sm"
+    : "absolute h-[1px] w-[3px] bg-primary/20"
+
+  if (!mounted) return null
+
+  return (
+    <div
+      key={`particle-${type}-${index}`}
+      className={className}
+      style={{
+        top: `${position.top}%`,
+        left: type === 'horizontal' ? '-5px' : `${position.left}%`,
+        animation
+      }}
+    />
+  )
+}
+
+// Progress wheel component with client-side only rendering
+const ProgressWheel = () => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
+  return (
+    <div className="relative mx-auto mb-6 h-44 w-44 transform transition-all duration-500 hover:scale-105" style={{ perspective: "1000px" }}>
+      <div className="relative h-full w-full transform-gpu transition-transform duration-1000 hover:rotate-y-12 hover:rotate-x-12" style={{ transformStyle: "preserve-3d" }}>
+        {/* Outer rotating circle with glow */}
+        <div className="absolute inset-0 animate-[spin_8s_linear_infinite]">
+          <div className="absolute -inset-3 rounded-full bg-primary/15 blur-xl animate-pulse" style={{ animationDuration: "4s" }}></div>
+          <div className="absolute -inset-2 rounded-full bg-gradient-radial from-primary/20 to-transparent blur-md"></div>
+          <svg viewBox="0 0 100 100" className="h-full w-full drop-shadow-lg">
+            <circle
+              cx="50"
+              cy="50"
+              r="45"
+              fill="none"
+              stroke="url(#gradientOuter)"
+              strokeWidth="8"
+              strokeDasharray="70 30"
+              className="animate-pulse"
+              style={{ filter: "drop-shadow(0 0 4px rgba(124, 58, 237, 0.5))" }}
+            />
+            <defs>
+              <linearGradient id="gradientOuter" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="rgb(124, 58, 237)" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="rgb(167, 139, 250)" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="rgb(220, 38, 38)" stopOpacity="0.9" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* Middle rotating circle with enhanced effects */}
+        <div className="absolute inset-2 animate-[spin_6s_linear_infinite_reverse]">
+          <svg viewBox="0 0 100 100" className="h-full w-full filter drop-shadow">
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
+              fill="none"
+              stroke="url(#gradientMiddle)"
+              strokeWidth="4"
+              strokeDasharray="60 40"
+            />
+            {/* Small decorative dots along the circle */}
+            {Array.from({ length: 8 }).map((_, i) => (
+              <circle
+                key={i}
+                cx={50 + 40 * Math.cos((i * Math.PI) / 4)}
+                cy={50 + 40 * Math.sin((i * Math.PI) / 4)}
+                r="2"
+                fill="rgb(139, 92, 246)"
+                className="animate-ping"
+                style={{ animationDuration: "3s", animationDelay: `${i * 0.5}s` }}
+              />
+            ))}
+            <defs>
+              <linearGradient id="gradientMiddle" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="rgb(124, 58, 237)" />
+                <stop offset="100%" stopColor="rgb(59, 130, 246)" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* Inner progress circle with enhanced effects */}
+        <div className="absolute inset-4">
+          <svg viewBox="0 0 100 100" className="h-full w-full filter drop-shadow-xl">
+            {/* Background circle with subtle texture */}
+            <circle cx="50" cy="50" r="35" fill="rgba(0,0,0,0.7)" />
+            <circle cx="50" cy="50" r="35" fill="url(#noisePattern)" fillOpacity="0.1" />
+
+            {/* Progress indicator with glow effect */}
+            <circle
+              cx="50"
+              cy="50"
+              r="35"
+              fill="none"
+              stroke="url(#gradientProgress)"
+              strokeWidth="8"
+              strokeDasharray={`${50 * 2.2} ${100 - 50 * 2.2}`}
+              strokeDashoffset="25"
+              strokeLinecap="round"
+              className="drop-shadow-[0_0_10px_rgba(139,92,246,0.7)]"
+            />
+
+            {/* Progress end cap with glow */}
+            <circle
+              cx={50 + 35 * Math.cos((50 * 2.2 * Math.PI) / 100 - Math.PI / 2)}
+              cy={50 + 35 * Math.sin((50 * 2.2 * Math.PI) / 100 - Math.PI / 2)}
+              r="4"
+              fill="rgb(139, 92, 246)"
+              className="animate-pulse"
+            />
+
+            <defs>
+              <linearGradient id="gradientProgress" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgb(124, 58, 237)" />
+                <stop offset="100%" stopColor="rgb(139, 92, 246)" />
+              </linearGradient>
+              <pattern id="noisePattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="100" height="100" fill="#000" />
+                <rect x="0" y="0" width="100" height="100" fill="url(#noise)" />
+              </pattern>
+              <filter id="noise">
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.65"
+                  numOctaves="3"
+                  stitchTiles="stitch"
+                />
+                <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.5 0" />
+              </filter>
+            </defs>
+          </svg>
+
+          {/* Enhanced percentage display with animation */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex flex-col items-center">
+              <div className="relative">
+                <span className="text-4xl font-bold text-primary drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">
+                  50%
+                </span>
+                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-primary animate-ping"></span>
+              </div>
+              <div className="mt-1 flex items-center gap-1 text-primary/80">
+                <span className="text-xs uppercase tracking-wider">Progress</span>
+                <svg
+                  className="h-4 w-4 animate-bounce"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7 7 7-7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Progress tracker component
+const ProgressTracker = () => {
+  const [mounted, setMounted] = useState(false)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    setMounted(true)
+    // Simulate progress loading animation
+    const timer = setTimeout(() => {
+      setProgress(50) // This would come from your actual user progress data
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (!mounted) return null
+
+  return (
+    <div className="w-full max-w-[300px] space-y-3 pt-2">
+      {/* Progress visualization with gamification elements */}
+      <div className="relative h-6 w-full overflow-hidden rounded-lg bg-gradient-to-r from-black/40 to-black/60 p-[2px] shadow-inner">
+        {/* Animated background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="h-full w-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJ3aGl0ZSIgZmlsbC1ydWxlPSJldmVub2RkIj48Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIvPjwvZz48L3N2Z3Y=')]"></div>
+        </div>
+
+        {/* Progress track with milestone markers */}
+        <div className="absolute inset-y-0 left-0 flex w-full items-center px-1">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="relative flex-1">
+              {i < Math.floor(progress / 12.5) ? (
+                <div className="absolute top-1/2 -mt-1 h-2 w-2 -translate-y-1/2 rounded-full bg-white/80 shadow-[0_0_5px_rgba(255,255,255,0.5)]"></div>
+              ) : (
+                <div className="absolute top-1/2 -mt-1 h-2 w-2 -translate-y-1/2 rounded-full bg-white/20"></div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Actual progress bar with dynamic effects */}
+        <div
+          className="relative h-full origin-left rounded bg-gradient-to-r from-primary via-purple-500 to-primary/90 transition-all duration-1000 ease-out"
+          style={{
+            width: `${progress}%`,
+            boxShadow: "0 0 15px rgba(139, 92, 246, 0.5), 0 0 5px rgba(139, 92, 246, 0.3) inset",
+            animation: "pulse-glow 2s infinite alternate",
+          }}
+        >
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="h-full w-20 animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
+          </div>
+
+          {/* Particle effects inside progress bar */}
+          <div className="absolute inset-0 overflow-hidden">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={i}
+                className="absolute h-1 w-1 rounded-full bg-white/80"
+                style={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animation: `progress-particle ${2 + Math.random() * 3}s ease-out infinite ${Math.random() * 2}s`,
+                }}
+              ></div>
+            ))}
+          </div>
+        </div>
+
+        {/* Progress indicator with pulsing effect */}
+        <div className="absolute top-1/2 left-1/2 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-primary shadow-[0_0_10px_rgba(139,92,246,0.7)]">
+          <div
+            className="absolute h-full w-full animate-ping rounded-full bg-primary/40 opacity-75"
+            style={{ animationDuration: "1.5s" }}
+          ></div>
+          <div className="h-2 w-2 rounded-full bg-white"></div>
+        </div>
+      </div>
+
+      {/* Enhanced text indicators with motivational elements */}
+      <div className="flex flex-col space-y-1">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/20">
+              <svg className="h-2.5 w-2.5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <span className="text-xs font-medium text-primary/90">{Math.floor(progress / 12.5)}/8 Modules Mastered</span>
+          </div>
+          <div className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+            {progress}% Complete
+          </div>
+        </div>
+
+        {/* Motivational message with social proof */}
+        <p className="text-xs text-muted-foreground">
+          <span className="font-medium text-primary/80">Impressive progress!</span> You're learning faster
+          than 65% of students.
+        </p>
+
+        {/* Next milestone indicator */}
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <svg
+            className="h-3.5 w-3.5 text-primary/70"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+          <span>
+            Next milestone: <span className="font-medium text-primary/80">Liquidity Pool Expert</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function CourseHero() {
   return (
@@ -124,42 +451,18 @@ export function CourseHero() {
                 {/* Enhanced particle effects with multiple types */}
                 <div className="absolute inset-0 overflow-hidden">
                   {/* Standard particles */}
-                  {[...Array(15)].map((_, i) => (
-                    <div
-                      key={`p1-${i}`}
-                      className="absolute h-1 w-1 rounded-full bg-primary/30"
-                      style={{
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`,
-                        animation: `particle ${3 + Math.random() * 4}s linear infinite ${Math.random() * 5}s`,
-                      }}
-                    />
+                  {Array.from({ length: 15 }).map((_, i) => (
+                    <Particle key={`standard-${i}`} index={i} type="standard" />
                   ))}
 
                   {/* Larger glowing particles */}
-                  {[...Array(8)].map((_, i) => (
-                    <div
-                      key={`p2-${i}`}
-                      className="absolute h-2 w-2 rounded-full bg-blue-400/20 blur-sm"
-                      style={{
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`,
-                        animation: `particleGlow ${5 + Math.random() * 5}s ease-in-out infinite ${Math.random() * 5}s`,
-                      }}
-                    />
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <Particle key={`glow-${i}`} index={i} type="glow" />
                   ))}
 
                   {/* Horizontal moving particles */}
-                  {[...Array(6)].map((_, i) => (
-                    <div
-                      key={`p3-${i}`}
-                      className="absolute h-[1px] w-[3px] bg-primary/20"
-                      style={{
-                        top: `${10 + Math.random() * 80}%`,
-                        left: `-5px`,
-                        animation: `particleHorizontal ${10 + Math.random() * 15}s linear infinite ${Math.random() * 5}s`,
-                      }}
-                    />
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <Particle key={`horizontal-${i}`} index={i} type="horizontal" />
                   ))}
 
                   {/* Pulsing dot clusters */}
@@ -211,274 +514,11 @@ export function CourseHero() {
                   </div>
                 </div>
 
-                {/* Enhanced progress wheel container with 3D effect */}
-                <div
-                  className="relative mx-auto mb-6 h-44 w-44 transform transition-all duration-500 hover:scale-105"
-                  style={{ perspective: "1000px" }}
-                >
-                  {/* 3D rotation container */}
-                  <div
-                    className="relative h-full w-full transform-gpu transition-transform duration-1000 hover:rotate-y-12 hover:rotate-x-12"
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    {/* Outer rotating circle with glow */}
-                    <div className="absolute inset-0 animate-[spin_8s_linear_infinite]">
-                      <div
-                        className="absolute -inset-3 rounded-full bg-primary/15 blur-xl animate-pulse"
-                        style={{ animationDuration: "4s" }}
-                      ></div>
-                      <div className="absolute -inset-2 rounded-full bg-gradient-radial from-primary/20 to-transparent blur-md"></div>
-                      <svg viewBox="0 0 100 100" className="h-full w-full drop-shadow-lg">
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="45"
-                          fill="none"
-                          stroke="url(#gradientOuter)"
-                          strokeWidth="8"
-                          strokeDasharray="70 30"
-                          className="animate-pulse"
-                          style={{ filter: "drop-shadow(0 0 4px rgba(124, 58, 237, 0.5))" }}
-                        />
-                        <defs>
-                          <linearGradient id="gradientOuter" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="rgb(124, 58, 237)" stopOpacity="0.9" />
-                            <stop offset="50%" stopColor="rgb(167, 139, 250)" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="rgb(220, 38, 38)" stopOpacity="0.9" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </div>
+                {/* Progress wheel */}
+                <ProgressWheel />
 
-                    {/* Middle rotating circle with enhanced effects */}
-                    <div className="absolute inset-2 animate-[spin_6s_linear_infinite_reverse]">
-                      <svg viewBox="0 0 100 100" className="h-full w-full filter drop-shadow">
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          fill="none"
-                          stroke="url(#gradientMiddle)"
-                          strokeWidth="4"
-                          strokeDasharray="60 40"
-                        />
-                        {/* Small decorative dots along the circle */}
-                        {[...Array(8)].map((_, i) => (
-                          <circle
-                            key={i}
-                            cx={50 + 40 * Math.cos((i * Math.PI) / 4)}
-                            cy={50 + 40 * Math.sin((i * Math.PI) / 4)}
-                            r="2"
-                            fill="rgb(139, 92, 246)"
-                            className="animate-ping"
-                            style={{ animationDuration: "3s", animationDelay: `${i * 0.5}s` }}
-                          />
-                        ))}
-                        <defs>
-                          <linearGradient id="gradientMiddle" x1="100%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="rgb(124, 58, 237)" />
-                            <stop offset="100%" stopColor="rgb(59, 130, 246)" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </div>
-
-                    {/* Inner progress circle with enhanced effects */}
-                    <div className="absolute inset-4">
-                      <svg viewBox="0 0 100 100" className="h-full w-full filter drop-shadow-xl">
-                        {/* Background circle with subtle texture */}
-                        <circle cx="50" cy="50" r="35" fill="rgba(0,0,0,0.7)" />
-                        <circle cx="50" cy="50" r="35" fill="url(#noisePattern)" fillOpacity="0.1" />
-
-                        {/* Progress indicator with glow effect */}
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="35"
-                          fill="none"
-                          stroke="url(#gradientProgress)"
-                          strokeWidth="8"
-                          strokeDasharray={`${50 * 2.2} ${100 - 50 * 2.2}`}
-                          strokeDashoffset="25"
-                          strokeLinecap="round"
-                          className="drop-shadow-[0_0_10px_rgba(139,92,246,0.7)]"
-                        />
-
-                        {/* Progress end cap with glow */}
-                        <circle
-                          cx={50 + 35 * Math.cos((50 * 2.2 * Math.PI) / 100 - Math.PI / 2)}
-                          cy={50 + 35 * Math.sin((50 * 2.2 * Math.PI) / 100 - Math.PI / 2)}
-                          r="4"
-                          fill="rgb(139, 92, 246)"
-                          className="animate-pulse"
-                        />
-
-                        <defs>
-                          <linearGradient id="gradientProgress" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="rgb(124, 58, 237)" />
-                            <stop offset="100%" stopColor="rgb(139, 92, 246)" />
-                          </linearGradient>
-                          <pattern id="noisePattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                            <rect x="0" y="0" width="100" height="100" fill="#000" />
-                            <rect x="0" y="0" width="100" height="100" fill="url(#noise)" />
-                          </pattern>
-                          <filter id="noise">
-                            <feTurbulence
-                              type="fractalNoise"
-                              baseFrequency="0.65"
-                              numOctaves="3"
-                              stitchTiles="stitch"
-                            />
-                            <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.5 0" />
-                          </filter>
-                        </defs>
-                      </svg>
-
-                      {/* Enhanced percentage display with animation */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center">
-                          <div className="relative">
-                            <span className="text-4xl font-bold text-primary drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]">
-                              50%
-                            </span>
-                            <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-primary animate-ping"></span>
-                          </div>
-                          <div className="mt-1 flex items-center gap-1 text-primary/80">
-                            <span className="text-xs uppercase tracking-wider">Progress</span>
-                            <svg
-                              className="h-4 w-4 animate-bounce"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7 7 7-7" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Enhanced text with animation and glow */}
-                <div className="space-y-3 transform transition-all duration-500">
-                  <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-300">
-                    You're 50% to DeFi Mastery!
-                  </h2>
-                  <p className="max-w-[300px] text-muted-foreground leading-relaxed">
-                    Continue your journey to become a DeFi expert with our interactive lessons and unlock new
-                    opportunities.
-                  </p>
-
-                  <div className="w-full max-w-[300px] space-y-3 pt-2">
-                    {/* Progress visualization with gamification elements */}
-                    <div className="relative h-6 w-full overflow-hidden rounded-lg bg-gradient-to-r from-black/40 to-black/60 p-[2px] shadow-inner">
-                      {/* Animated background pattern */}
-                      <div className="absolute inset-0 opacity-10">
-                        <div className="h-full w-full bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJ3aGl0ZSIgZmlsbC1ydWxlPSJldmVub2RkIj48Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMSIvPjwvZz48L3N2Z3Y=')]"></div>
-                      </div>
-
-                      {/* Progress track with milestone markers */}
-                      <div className="absolute inset-y-0 left-0 flex w-full items-center px-1">
-                        {[...Array(8)].map((_, i) => (
-                          <div key={i} className="relative flex-1">
-                            {i < 4 ? (
-                              <div className="absolute top-1/2 -mt-1 h-2 w-2 -translate-y-1/2 rounded-full bg-white/80 shadow-[0_0_5px_rgba(255,255,255,0.5)]"></div>
-                            ) : (
-                              <div className="absolute top-1/2 -mt-1 h-2 w-2 -translate-y-1/2 rounded-full bg-white/20"></div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Actual progress bar with dynamic effects */}
-                      <div
-                        className="relative h-full w-1/2 origin-left rounded bg-gradient-to-r from-primary via-purple-500 to-primary/90 transition-all duration-1000 ease-out"
-                        style={{
-                          boxShadow: "0 0 15px rgba(139, 92, 246, 0.5), 0 0 5px rgba(139, 92, 246, 0.3) inset",
-                          animation: "pulse-glow 2s infinite alternate",
-                        }}
-                      >
-                        {/* Shimmer effect */}
-                        <div className="absolute inset-0 overflow-hidden">
-                          <div className="h-full w-20 animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                        </div>
-
-                        {/* Particle effects inside progress bar */}
-                        <div className="absolute inset-0 overflow-hidden">
-                          {[...Array(5)].map((_, i) => (
-                            <div
-                              key={i}
-                              className="absolute h-1 w-1 rounded-full bg-white/80"
-                              style={{
-                                top: `${Math.random() * 100}%`,
-                                left: `${Math.random() * 100}%`,
-                                animation: `progress-particle ${2 + Math.random() * 3}s ease-out infinite ${Math.random() * 2}s`,
-                              }}
-                            ></div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Progress indicator with pulsing effect */}
-                      <div className="absolute top-1/2 left-1/2 flex h-5 w-5 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-primary shadow-[0_0_10px_rgba(139,92,246,0.7)]">
-                        <div
-                          className="absolute h-full w-full animate-ping rounded-full bg-primary/40 opacity-75"
-                          style={{ animationDuration: "1.5s" }}
-                        ></div>
-                        <div className="h-2 w-2 rounded-full bg-white"></div>
-                      </div>
-                    </div>
-
-                    {/* Enhanced text indicators with motivational elements */}
-                    <div className="flex flex-col space-y-1">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <div className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/20">
-                            <svg className="h-2.5 w-2.5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                              <path
-                                fillRule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </div>
-                          <span className="text-xs font-medium text-primary/90">4/8 Modules Mastered</span>
-                        </div>
-                        <div className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                          50% Complete
-                        </div>
-                      </div>
-
-                      {/* Motivational message with social proof */}
-                      <p className="text-xs text-muted-foreground">
-                        <span className="font-medium text-primary/80">Impressive progress!</span> You're learning faster
-                        than 65% of students.
-                      </p>
-
-                      {/* Next milestone indicator */}
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <svg
-                          className="h-3.5 w-3.5 text-primary/70"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13 10V3L4 14h7v7l9-11h-7z"
-                          />
-                        </svg>
-                        <span>
-                          Next milestone: <span className="font-medium text-primary/80">Liquidity Pool Expert</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                {/* Progress tracker */}
+                <ProgressTracker />
               </div>
             </div>
           </div>
@@ -513,6 +553,19 @@ export function CourseHero() {
           90% { opacity: 0.2; }
           100% { transform: translateX(calc(100% + 50px)) translateY(-20px); opacity: 0; }
         }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes pulse-glow {
+          0% { filter: brightness(1); }
+          100% { filter: brightness(1.2); }
+        }
+        @keyframes progress-particle {
+          0% { transform: translate(0, 0); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translate(-20px, -10px); opacity: 0; }
+        }
         .binary-rain {
           position: absolute;
           top: 0;
@@ -539,19 +592,6 @@ export function CourseHero() {
         @keyframes binary-rain-fall {
           0% { transform: translateY(-100%); }
           100% { transform: translateY(100%); }
-        }
-        @keyframes shimmer {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes pulse-glow {
-          0% { filter: brightness(1); }
-          100% { filter: brightness(1.2); }
-        }
-        @keyframes progress-particle {
-          0% { transform: translate(0, 0); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translate(-20px, -10px); opacity: 0; }
         }
       `}</style>
     </div>
