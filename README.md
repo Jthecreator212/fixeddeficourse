@@ -6,35 +6,45 @@ This repository contains a comprehensive DeFi education platform built with Next
 
 ## Prerequisites
 
-Before launching this project in Cursor AI, ensure you have the following installed:
+Before launching this project, ensure you have the following installed:
 
 - Node.js (v18.17.0 or later)
-- npm (v9.6.0 or later) or yarn (v1.22.0 or later)
+- pnpm (v8.0.0 or later)
 - Git
+
+## Environment Setup
+
+The project uses the following versions:
+- Next.js 15.2.4
+- React 19
+- TypeScript 5
+- TailwindCSS 3.4.17
 
 ## Quick Start
 
-Follow these steps to launch an exact 1:1 replica of this project in Cursor AI:
+Follow these steps to launch the project:
 
 1. Clone the repository:
-   \`\`\`bash
+   ```bash
    git clone https://github.com/your-username/defi-course-app.git
    cd defi-course-app
-   \`\`\`
+   ```
 
-2. Install dependencies:
-   \`\`\`bash
-   npm install
-   # or
-   yarn install
-   \`\`\`
+2. Install dependencies using pnpm:
+   ```bash
+   pnpm install
+   ```
 
 3. Start the development server:
-   \`\`\`bash
-   npm run dev
+   ```bash
+   # For Windows users (recommended):
+   node_modules/.bin/next dev
+   
+   # Alternative methods:
+   pnpx next dev
    # or
-   yarn dev
-   \`\`\`
+   pnpm run dev
+   ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
@@ -42,7 +52,7 @@ Follow these steps to launch an exact 1:1 replica of this project in Cursor AI:
 
 The project follows a standard Next.js App Router structure:
 
-\`\`\`
+```
 defi-course-app/
 ├── app/                    # Next.js App Router pages
 │   ├── admin/              # Admin dashboard pages
@@ -67,7 +77,7 @@ defi-course-app/
 ├── public/                 # Static assets
 ├── tailwind.config.ts      # Tailwind CSS configuration
 └── ...                     # Other configuration files
-\`\`\`
+```
 
 ## Key Features
 
@@ -87,18 +97,18 @@ The project uses a custom Tailwind configuration with a purple-based color schem
 
 The project uses the Inter font from Google Fonts. This is loaded in the `app/layout.tsx` file:
 
-\`\`\`typescript
+```typescript
 import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ["latin"] })
-\`\`\`
+```
 
 ### Theme Configuration
 
 The application uses a theme provider with dark mode as the default:
 
-\`\`\`typescript
+```typescript
 <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
-\`\`\`
+```
 
 ## Troubleshooting
 
@@ -106,7 +116,7 @@ The application uses a theme provider with dark mode as the default:
 
 If you encounter spacing issues in the module content (text appearing without proper paragraph breaks), add the following to your `globals.css` file:
 
-\`\`\`css
+```css
 @layer base {
   p {
     @apply mb-4;
@@ -116,7 +126,7 @@ If you encounter spacing issues in the module content (text appearing without pr
     @apply mt-6 mb-4;
   }
 }
-\`\`\`
+```
 
 ### Module Navigation Issues
 
@@ -141,8 +151,8 @@ If the module navigation doesn't work correctly, check that the module registry 
 To ensure the project looks exactly the same in Cursor AI:
 
 1. Use the "Open Folder" option in Cursor AI to open the project directory.
-2. Ensure all dependencies are installed by running `npm install` in the terminal.
-3. Start the development server with `npm run dev`.
+2. Ensure all dependencies are installed by running `pnpm install` in the terminal.
+3. Start the development server with `pnpx next dev`.
 4. If you encounter any styling issues, verify that the Tailwind configuration is correctly loaded.
 5. For optimal performance in Cursor AI, consider using the integrated terminal for running commands.
 
@@ -173,7 +183,7 @@ The application follows a component-based architecture:
 
 If you notice spacing issues in the module content, modify the `components/module-template.tsx` file to add proper spacing between paragraphs:
 
-\`\`\`tsx
+```tsx
 // In TheorySectionRenderer component
 return (
   <div className="space-y-4">
@@ -184,7 +194,7 @@ return (
     ))}
   </div>
 );
-\`\`\`
+```
 
 ### 2. Navigation Issues
 
@@ -192,24 +202,4 @@ If module navigation doesn't work correctly, check:
 
 1. The module slug in the URL matches the module ID in the registry
 2. The module content is properly exported from its file
-3. The module is correctly registered in `lib/module-registry.ts`
-
-### 3. Styling Consistency
-
-For consistent styling across the application:
-
-1. Use the provided Tailwind classes
-2. Don't modify the `tailwind.config.ts` file
-3. Use the theme context for dark/light mode components
-
-## Performance Optimization
-
-The application is optimized for performance:
-
-- Server components are used where possible to reduce client-side JavaScript
-- Images are optimized using Next.js Image component
-- Code splitting is implemented through dynamic imports
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+3. The module is correctly registered in `
