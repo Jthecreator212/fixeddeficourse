@@ -82,6 +82,58 @@ const quizQuestions: QuizQuestion[] = [
 function RenderTheory() {
   return (
     <div>
+      {/* Introduction Hook - Moved to top */}
+      <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-background p-6 rounded-xl border border-primary/30 shadow-lg relative overflow-hidden mb-8">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/10 rounded-full -ml-8 -mb-8 blur-xl"></div>
+
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div className="bg-primary/20 p-4 rounded-full flex items-center justify-center">
+            <svg
+              className="h-10 w-10 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              />
+            </svg>
+          </div>
+
+          <div className="flex-1">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+              Protect Your Digital Assets
+            </h2>
+            <p className="text-lg relative">
+              <span className="bg-primary/10 px-2 py-1 rounded font-medium">Your wallet is your vault.</span> Securing
+              your crypto wallet is the most critical step in your blockchain journey. Remember: if you lose your
+              keys, you lose your funds—permanently.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Seed Phrase Security
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Hardware Wallets
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Phishing Prevention
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Backup Strategies
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="prose dark:prose-invert max-w-none">
         <div
           dangerouslySetInnerHTML={{
@@ -169,58 +221,6 @@ function RenderTheory() {
       </div>
 
       <div className="mt-10 space-y-10">
-        {/* Introduction Hook - Enhanced Version */}
-        <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-background p-6 rounded-xl border border-primary/30 shadow-lg relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/10 rounded-full -ml-8 -mb-8 blur-xl"></div>
-
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="bg-primary/20 p-4 rounded-full flex items-center justify-center">
-              <svg
-                className="h-10 w-10 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
-            </div>
-
-            <div className="flex-1">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-                Protect Your Digital Assets
-              </h2>
-              <p className="text-lg relative">
-                <span className="bg-primary/10 px-2 py-1 rounded font-medium">Your wallet is your vault.</span> Securing
-                your crypto wallet is the most critical step in your blockchain journey. Remember: if you lose your
-                keys, you lose your funds—permanently.
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-3">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Seed Phrase Security
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Hardware Wallets
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Phishing Prevention
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Backup Strategies
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Types of Wallets */}
         <div>
           <h2 className="text-2xl font-bold mb-6">Types of Wallets and Examples</h2>
@@ -250,18 +250,18 @@ function RenderTheory() {
               <p className="text-sm text-muted-foreground mb-2">Smartphone apps for managing crypto</p>
               <div className="flex flex-wrap gap-2">
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Trust Wallet</span>
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Phantom Wallet</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Coinbase Wallet</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Exodus</span>
               </div>
             </div>
 
             <div className="bg-secondary/50 p-5 rounded-lg">
               <h3 className="font-semibold mb-2">Desktop Wallets</h3>
-              <p className="text-sm text-muted-foreground mb-2">Software applications for computers</p>
+              <p className="text-sm text-muted-foreground mb-2">Software wallets for computers</p>
               <div className="flex flex-wrap gap-2">
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Electrum</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Exodus</span>
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Atomic Wallet</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Atomic</span>
               </div>
             </div>
           </div>
