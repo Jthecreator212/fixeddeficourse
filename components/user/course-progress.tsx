@@ -5,29 +5,49 @@ import { Progress } from "@/components/ui/progress"
 import { getModules } from "@/lib/modules"
 import { getCompletedModules } from "@/lib/user-progress"
 import { useEffect, useState } from "react"
+import { ModuleConfig, UserProgress } from '@/lib/types'
 
-export function CourseProgress() {
-  const [modules, setModules] = useState<any[]>([])
-  const [completedModules, setCompletedModules] = useState<string[]>([])
+interface CourseProgressProps {
+  userId: string
+}
+
+export function CourseProgress({ userId }: CourseProgressProps) {
+  const [modules, setModules] = useState<ModuleConfig[]>([])
+  const [progress, setProgress] = useState<UserProgress[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Get all modules
-    setModules(getModules())
+    async function fetchProgress() {
+      try {
+        const response = await fetch(`/api/user/${userId}/progress`)
+        if (!response.ok) {
+          throw new Error('Failed to fetch progress')
+        }
+        const data = await response.json()
+        setModules(data.modules)
+        setProgress(data.progress)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-    // Get completed modules
-    setCompletedModules(getCompletedModules())
+    fetchProgress()
+  }, [userId])
 
-    // Set up an interval to check for updates (in case user completes a module in another tab)
-    const interval = setInterval(() => {
-      setCompletedModules(getCompletedModules())
-    }, 30000) // Check every 30 seconds
+  if (loading) {
+    return <div>Loading progress...</div>
+  }
 
-    return () => clearInterval(interval)
-  }, [])
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>
+  }
 
+  const completedModules = progress.filter(p => p.completed).length
   const totalModules = modules.length
-  const completedCount = completedModules.length
-  const progressPercentage = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0
+  const progressPercentage = totalModules > 0 ? (completedModules / totalModules) * 100 : 0
 
   return (
     <Card>
@@ -37,14 +57,16 @@ export function CourseProgress() {
       <CardContent className="space-y-6">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Overall Progress</span>
-            <span className="text-sm font-medium">{progressPercentage}%</span>
+            <span className="text-sm font-medium">
+              {completedModules} of {totalModules} modules completed
+            </span>
+            <span className="text-sm font-medium">{Math.round(progressPercentage)}%</span>
           </div>
           <Progress value={progressPercentage} className="h-2" />
         </div>
         <div className="space-y-4">
           {modules.slice(0, 5).map((module) => {
-            const isCompleted = completedModules.includes(module.slug)
+            const isCompleted = progress.some(p => p.moduleSlug === module.slug && p.completed)
             const moduleProgress = isCompleted ? 100 : 0
 
             return (

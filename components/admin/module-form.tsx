@@ -9,55 +9,78 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
-import { RichTextEditor } from "@/components/admin/rich-text-editor"
+import { AdminModuleFormData } from '@/lib/types'
 
 const formSchema = z.object({
-  title: z.string().min(5, {
-    message: "Title must be at least 5 characters.",
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  order: z.number().min(0, "Order must be a positive number"),
+  isPublished: z.boolean().default(false),
+  content: z.object({
+    introduction: z.object({
+      title: z.string(),
+      description: z.string(),
+      learningObjectives: z.array(z.string()),
+    }),
+    mainContent: z.object({
+      sections: z.array(z.object({
+        title: z.string(),
+        content: z.string(),
+        examples: z.array(z.object({
+          title: z.string(),
+          description: z.string(),
+          code: z.string().optional(),
+        })).optional(),
+      })),
+    }),
+    lookingAhead: z.object({
+      title: z.string(),
+      content: z.string(),
+      nextSteps: z.array(z.string()),
+    }),
   }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
-  order: z.string(),
-  duration: z.string(),
-  status: z.string(),
-  content: z.string().optional(),
 })
 
 interface ModuleFormProps {
   courseId: string
-  module?: any
+  initialData?: AdminModuleFormData
+  onSubmit: (data: AdminModuleFormData) => void
 }
 
-export function ModuleForm({ courseId, module = null }: ModuleFormProps) {
+export function ModuleForm({ courseId, initialData, onSubmit }: ModuleFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: module || {
+    defaultValues: initialData || {
       title: "",
       description: "",
-      order: "1",
-      duration: "",
-      status: "draft",
-      content: "",
+      order: 0,
+      isPublished: false,
+      content: {
+        introduction: {
+          title: "",
+          description: "",
+          learningObjectives: [],
+        },
+        mainContent: {
+          sections: [],
+        },
+        lookingAhead: {
+          title: "",
+          content: "",
+          nextSteps: [],
+        },
+      },
     },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-
     try {
-      // In a real app, you would send this data to your API
-      console.log(values)
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Redirect to modules page
+      await onSubmit(values)
       router.push(`/admin/courses/${courseId}/modules`)
     } catch (error) {
       console.error("Error submitting form:", error)
@@ -68,20 +91,33 @@ export function ModuleForm({ courseId, module = null }: ModuleFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
         <Card>
           <CardContent className="pt-6">
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6">
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Module Title</FormLabel>
+                    <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. Introduction to DeFi" {...field} />
+                      <Input placeholder="Module title" {...field} />
                     </FormControl>
-                    <FormDescription>The name of this module as it will appear to students.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Module description" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -92,91 +128,28 @@ export function ModuleForm({ courseId, module = null }: ModuleFormProps) {
                 name="order"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Module Order</FormLabel>
+                    <FormLabel>Order</FormLabel>
                     <FormControl>
-                      <Input type="number" min="1" {...field} />
+                      <Input type="number" {...field} onChange={e => field.onChange(Number(e.target.value))} />
                     </FormControl>
-                    <FormDescription>The position of this module in the course.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            </div>
 
-            <div className="mt-6">
               <FormField
                 control={form.control}
-                name="description"
+                name="isPublished"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Module Description</FormLabel>
+                  <FormItem className="flex items-center space-x-2">
                     <FormControl>
-                      <Textarea
-                        placeholder="Describe what students will learn in this module..."
-                        className="min-h-[120px]"
-                        {...field}
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={e => field.onChange(e.target.checked)}
                       />
                     </FormControl>
-                    <FormDescription>A brief summary of the module content and learning outcomes.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2 mt-6">
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Estimated Duration</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. 45 min" {...field} />
-                    </FormControl>
-                    <FormDescription>How long it typically takes to complete this module.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Module Status</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="published">Published</SelectItem>
-                        <SelectItem value="archived">Archived</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>Control the visibility of this module.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="mt-6">
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Module Overview</FormLabel>
-                    <FormControl>
-                      <RichTextEditor value={field.value || ""} onChange={field.onChange} />
-                    </FormControl>
-                    <FormDescription>Provide a detailed overview of what this module covers.</FormDescription>
-                    <FormMessage />
+                    <FormLabel>Published</FormLabel>
                   </FormItem>
                 )}
               />

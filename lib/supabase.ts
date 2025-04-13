@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import { Database } from './database.types'
 
 // Type definitions for our database tables
 export type Database = {
@@ -98,6 +99,41 @@ export type Database = {
 // Check if we're in a browser environment
 const isBrowser = typeof window !== "undefined"
 
+// Get Supabase URL and key with fallbacks
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+if (!supabaseUrl) {
+  throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_URL')
+}
+if (!supabaseAnonKey) {
+  throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_ANON_KEY')
+}
+
+// Create the Supabase client
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: isBrowser,
+    autoRefreshToken: isBrowser,
+  },
+})
+
+// Create a server-side client with admin privileges
+export const getServiceSupabase = () => {
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseServiceKey) {
+    throw new Error('Missing env.SUPABASE_SERVICE_ROLE_KEY')
+  }
+
+  return createClient<Database>(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  })
+}
+
 // Create a dummy client for development/preview when keys aren't available
 const createDummyClient = () => {
   console.warn("Using dummy Supabase client. Authentication and database features will not work.")
@@ -121,18 +157,6 @@ const createDummyClient = () => {
   } as any
 }
 
-// Get Supabase URL and key with fallbacks
-let supabaseUrl: string | undefined
-let supabaseAnonKey: string | undefined
-
-// Try to get environment variables
-try {
-  supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-} catch (error) {
-  console.error("Error accessing environment variables:", error)
-}
-
 // Create a function to get the Supabase client
 export const getSupabaseClient = () => {
   // Check if we have the required configuration
@@ -151,7 +175,7 @@ export const getSupabaseClient = () => {
 }
 
 // Export a singleton instance for convenience
-export const supabase = getSupabaseClient()
+export const supabaseSingleton = getSupabaseClient()
 
 // Create a server-side client with admin privileges
 export const createServerSupabaseClient = () => {

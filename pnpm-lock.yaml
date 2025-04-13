@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@hookform/resolvers':
-        specifier: latest
-        version: 5.0.1(react-hook-form@7.55.0(react@19.1.0))
       '@radix-ui/react-accordion':
         specifier: ^1.2.2
         version: 1.2.4(@types/react-dom@19.1.2(@types/react@19.1.1))(@types/react@19.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -95,9 +92,6 @@ importers:
       '@supabase/auth-helpers-nextjs':
         specifier: latest
         version: 0.10.0(@supabase/supabase-js@2.49.4)
-      '@supabase/supabase-js':
-        specifier: latest
-        version: 2.49.4
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.21(postcss@8.5.3)
@@ -143,9 +137,6 @@ importers:
       react-dom:
         specifier: ^19
         version: 19.1.0(react@19.1.0)
-      react-hook-form:
-        specifier: latest
-        version: 7.55.0(react@19.1.0)
       react-resizable-panels:
         specifier: ^2.1.7
         version: 2.1.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -164,28 +155,37 @@ importers:
       vaul:
         specifier: ^0.9.6
         version: 0.9.9(@types/react-dom@19.1.2(@types/react@19.1.1))(@types/react@19.1.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      zod:
-        specifier: latest
-        version: 3.24.2
     devDependencies:
+      '@hookform/resolvers':
+        specifier: ^5.0.1
+        version: 5.0.1(react-hook-form@7.55.0(react@19.1.0))
+      '@supabase/supabase-js':
+        specifier: ^2.49.4
+        version: 2.49.4
       '@types/node':
-        specifier: ^22
+        specifier: ^22.14.1
         version: 22.14.1
       '@types/react':
-        specifier: ^19
+        specifier: ^19.1.1
         version: 19.1.1
       '@types/react-dom':
-        specifier: ^19
+        specifier: ^19.1.2
         version: 19.1.2(@types/react@19.1.1)
       postcss:
         specifier: ^8
         version: 8.5.3
+      react-hook-form:
+        specifier: ^7.55.0
+        version: 7.55.0(react@19.1.0)
       tailwindcss:
         specifier: ^3.4.17
         version: 3.4.17
       typescript:
         specifier: ^5
         version: 5.8.3
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
 
 packages:
 
