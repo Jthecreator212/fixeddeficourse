@@ -84,6 +84,59 @@ function RenderTheory() {
     <div>
       <div className="prose dark:prose-invert max-w-none">
         <h2>Introduction to DeFi</h2>
+        
+        {/* Introduction Hook - Moved to top */}
+        <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-background p-6 rounded-xl border border-primary/30 shadow-lg relative overflow-hidden mb-8">
+          {/* Decorative elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/10 rounded-full -ml-8 -mb-8 blur-xl"></div>
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div className="bg-primary/20 p-4 rounded-full flex items-center justify-center">
+              <svg
+                className="h-10 w-10 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+
+            <div className="flex-1">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+                What if you could manage your money without ever stepping into a bank?
+              </h2>
+              <p className="text-lg relative">
+                <span className="bg-primary/10 px-2 py-1 rounded font-medium">DeFi makes that possible.</span>{" "}
+                Decentralized Finance is revolutionizing how we think about money, investments, and financial
+                services—all without traditional intermediaries.
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-3">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                  Financial Freedom
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                  Permissionless
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                  Transparent
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                  Programmable
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <p>
           Decentralized Finance (DeFi) is revolutionizing the financial landscape by leveraging blockchain technology to
           create open, permissionless, and transparent financial services. This module provides a foundational
@@ -147,58 +200,6 @@ function RenderTheory() {
       </div>
 
       <div className="mt-10 space-y-10">
-        {/* Introduction Hook - Enhanced Version */}
-        <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-background p-6 rounded-xl border border-primary/30 shadow-lg relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/10 rounded-full -ml-8 -mb-8 blur-xl"></div>
-
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="bg-primary/20 p-4 rounded-full flex items-center justify-center">
-              <svg
-                className="h-10 w-10 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-
-            <div className="flex-1">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
-                What if you could manage your money without ever stepping into a bank?
-              </h2>
-              <p className="text-lg relative">
-                <span className="bg-primary/10 px-2 py-1 rounded font-medium">DeFi makes that possible.</span>{" "}
-                Decentralized Finance is revolutionizing how we think about money, investments, and financial
-                services—all without traditional intermediaries.
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-3">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Financial Freedom
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Permissionless
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Transparent
-                </span>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
-                  Programmable
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Benefits and Risks */}
         <div>
           <h2 className="text-2xl font-bold mb-6">Benefits and Risks of DeFi</h2>
@@ -249,15 +250,15 @@ function RenderTheory() {
                 <li className="flex">
                   <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
                   <div>
-                    <span className="font-medium">Regulatory Uncertainty:</span> Laws and regulations around DeFi are
-                    still evolving in many jurisdictions, creating potential legal risks.
+                    <span className="font-medium">Market Volatility:</span> Cryptocurrency markets can be highly
+                    volatile, leading to potential losses in DeFi investments.
                   </div>
                 </li>
                 <li className="flex">
                   <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
                   <div>
-                    <span className="font-medium">Market Volatility:</span> Cryptocurrency markets can be highly
-                    volatile, affecting the stability and security of DeFi applications.
+                    <span className="font-medium">Regulatory Uncertainty:</span> The evolving regulatory landscape
+                    could impact DeFi services and their availability in different jurisdictions.
                   </div>
                 </li>
               </ul>
