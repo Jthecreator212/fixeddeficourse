@@ -79,6 +79,37 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Enhanced Typography Spacing */
+  p {
+    @apply mb-6 leading-7;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply mt-8 mb-4 leading-tight;
+  }
+
+  ul, ol {
+    @apply mb-6 pl-6;
+  }
+
+  li {
+    @apply mb-2;
+  }
+
+  /* Add space after list sections */
+  ul + p, ol + p {
+    @apply mt-6;
+  }
+
+  /* Ensure headers have proper spacing from previous content */
+  p + h2, ul + h2, ol + h2 {
+    @apply mt-10;
+  }
+
+  p + h3, ul + h3, ol + h3 {
+    @apply mt-8;
+  }
 }
 
 @layer components {
@@ -88,5 +119,25 @@
 
   .content-container {
     @apply w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Module Content Specific Styling */
+  .module-content {
+    @apply max-w-3xl mx-auto py-6 px-4;
+  }
+
+  .module-content section {
+    @apply mb-12;
+  }
+
+  .module-content h2 {
+    @apply border-b border-primary/20 pb-2;
+  }
+
+  /* Improve readability with proper text width constraints */
+  @media (min-width: 768px) {
+    .module-content p {
+      @apply max-w-[38em];
+    }
   }
 }
