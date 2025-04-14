@@ -28,7 +28,7 @@ export function ModuleContent({ moduleSlug }: ModuleContentProps) {
 
   return (
     <Tabs defaultValue="theory" value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="mb-6">
+      <TabsList className="mb-8">
         <TabsTrigger value="theory">Theory</TabsTrigger>
         <TabsTrigger value="video">Videos</TabsTrigger>
         <TabsTrigger value="quiz">Quick Quiz</TabsTrigger>
