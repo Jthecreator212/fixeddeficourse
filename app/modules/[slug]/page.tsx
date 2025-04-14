@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function ModulePage({ params }: { params: { slug: string } }) {
+export default async function ModulePage({ params }: { params: { slug: string } }) {
   const module = getModuleBySlug(params.slug)
 
   if (!module) {
