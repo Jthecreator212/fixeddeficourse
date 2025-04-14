@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -83,7 +83,6 @@ function RenderTheory() {
   return (
     <div>
       <div className="prose dark:prose-invert max-w-none">
-        <h2>Introduction to DeFi</h2>
         
         {/* Introduction Hook - Moved to top */}
         <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-background p-6 rounded-xl border border-primary/30 shadow-lg relative overflow-hidden mb-8">
@@ -118,7 +117,7 @@ function RenderTheory() {
                 Decentralized Finance is revolutionizing how we think about money, investments, and financial
                 services—all without traditional intermediaries.
               </p>
-
+              
               <div className="mt-4 flex flex-wrap gap-3">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
                   Financial Freedom
@@ -155,7 +154,7 @@ function RenderTheory() {
           The core difference lies in the infrastructure. Traditional finance relies on centralized entities, while DeFi
           operates on decentralized networks. This leads to several key advantages:
         </p>
-        <ul>
+        <ul className="list-disc pl-6 space-y-2">
           <li>
             <strong>Accessibility:</strong> DeFi services are available to anyone with an internet connection,
             regardless of their location or financial status.
@@ -175,7 +174,7 @@ function RenderTheory() {
 
         <h2>Key DeFi Components</h2>
         <p>The DeFi ecosystem comprises various interconnected components:</p>
-        <ul>
+        <ul className="list-disc pl-6 space-y-2">
           <li>
             <strong>Decentralized Exchanges (DEXs):</strong> Platforms for trading cryptocurrencies directly from user
             wallets, without intermediaries.
@@ -301,32 +300,6 @@ function RenderTheory() {
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">DAI</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">USDC</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">USDT</span>
-              </div>
-            </div>
-
-            <div className="bg-secondary/50 p-5 rounded-lg">
-              <h3 className="font-semibold mb-2">Yield Farming</h3>
-              <p className="text-sm text-muted-foreground mb-2">
-                Strategies to maximize returns by providing liquidity
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Curve Finance</span>
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Yearn Finance</span>
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Convex</span>
-              </div>
-            </div>
-
-            <div className="bg-secondary/50 p-5 rounded-lg">
-              <h3 className="font-semibold mb-2">DAOs</h3>
-              <p className="text-sm text-muted-foreground mb-2">
-                Community-governed entities that manage DeFi protocols
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">MakerDAO</span>
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">
-                  Uniswap Governance
-                </span>
-                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Aave DAO</span>
               </div>
             </div>
           </div>
@@ -514,3 +487,4 @@ export const IntroductionToDeFi: ModuleContentInterface = {
   renderQuiz: RenderQuiz,
   video,
 }
+
