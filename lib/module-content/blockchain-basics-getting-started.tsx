@@ -145,7 +145,7 @@ function RenderTheory() {
             <h2>Creating Your First Crypto Wallet</h2>
             <p>A crypto wallet is a software application that allows you to store, send, and receive cryptocurrencies. Unlike a physical wallet, it doesn't hold your coins directly; instead, it stores your private keys, which are used to access your funds on the blockchain.</p>
             
-            <h3>Steps to Create a Wallet</h3>
+            <h3 style="font-weight: 700;">Steps to Create a Wallet</h3>
             <p>For this guide, we'll use MetaMask, a popular and beginner-friendly wallet for Ethereum and other compatible blockchains. Here's how to set it up:</p>
             <ol>
               <li><strong>Step 1:</strong> Download the MetaMask extension for your web browser from the official MetaMask website. Avoid third-party sites to prevent scams.</li>
@@ -159,10 +159,10 @@ function RenderTheory() {
             <h2>Securing Your Private Keys</h2>
             <p>Your private key is a secret code that gives you control over your cryptocurrency funds. Think of it as the key to a digital safe—anyone with access to it can access your assets. In MetaMask, your private key is derived from your seed phrase, so securing both is critical.</p>
             
-            <h3>Why It Matters</h3>
+            <h3 style="font-weight: 700;">Why It Matters</h3>
             <p>If someone else gets your private key or seed phrase, they can steal your funds. Unlike a bank, there's no way to recover lost or stolen crypto—security is your responsibility.</p>
             
-            <h3>Best Practices</h3>
+            <h3 style="font-weight: 700;">Best Practices</h3>
             <ul>
               <li><strong>Store offline:</strong> Write your seed phrase on paper or use a hardware wallet (a physical device like Ledger or Trezor). Avoid digital storage like screenshots or cloud backups.</li>
               <li><strong>Never share:</strong> Legitimate services will never ask for your private key or seed phrase.</li>
@@ -174,27 +174,27 @@ function RenderTheory() {
             <h2>Understanding Wallet Addresses</h2>
             <p>A wallet address is a unique string of characters used to receive cryptocurrencies, similar to a bank account number. Each cryptocurrency has its own address format, but we'll focus on Ethereum addresses for this guide (used in MetaMask).</p>
             
-            <h3>What Is a Wallet Address?</h3>
+            <h3 style="font-weight: 700;">What Is a Wallet Address?</h3>
             <ul>
               <li>It's generated from your public key (which comes from your private key).</li>
               <li>It's safe to share because it only allows people to send you funds, not access them.</li>
               <li>In MetaMask, it starts with "0x" (e.g., 0x123abc...).</li>
             </ul>
             
-            <h3>How to Find It</h3>
+            <h3 style="font-weight: 700;">How to Find It</h3>
             <ul>
               <li>Open MetaMask and click on your account name at the top.</li>
               <li>Your wallet address will appear below it—click to copy it.</li>
             </ul>
             
-            <h3>Why It's Safe to Share</h3>
+            <h3 style="font-weight: 700;">Why It's Safe to Share</h3>
             <p>The blockchain is public, so anyone can see transactions linked to your address. However, they can't touch your funds without your private key.</p>
             <p><strong>Analogy:</strong> Your wallet address is like your home address—people can send you mail (crypto), but they can't get inside without the key (private key).</p>
             
             <h2>Making Your First Transaction</h2>
             <p>Now that your wallet is set up and secured, let's send a small amount of Ethereum (ETH) to another address.</p>
             
-            <h3>Steps to Send Crypto</h3>
+            <h3 style="font-weight: 700;">Steps to Send Crypto</h3>
             <ol>
               <li><strong>Step 1:</strong> Ensure you have ETH in your wallet. Buy it from an exchange (e.g., Coinbase, Binance) or receive it from someone else.</li>
               <li><strong>Step 2:</strong> Open MetaMask and click "Send."</li>
@@ -204,7 +204,7 @@ function RenderTheory() {
               <li><strong>Step 6:</strong> Check the status in the "Activity" tab. It may take a few minutes to complete.</li>
             </ol>
             
-            <h3>What Are Gas Fees?</h3>
+            <h3 style="font-weight: 700;">What Are Gas Fees?</h3>
             <p>Gas fees are payments to miners who process transactions on the blockchain. They vary based on network demand—think of them as a "shipping fee" for your transaction.</p>
             <p><strong>Pro Tip:</strong> Start with a tiny amount to test the process before sending larger sums.</p>
             
