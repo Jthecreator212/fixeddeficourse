@@ -5,7 +5,7 @@ import { DeFiLendingProtocols } from "./defi-lending-protocols"
 import { DeFiAsABusiness } from "./defi-as-a-business"
 import { DeFiLiquidityPools } from "./defi-liquidity-pools"
 import { DeFiEnteringLiquidityPool } from "./defi-entering-first-liquidity-pool"
-import Defi7RulesLiquidityPool from "./defi-7-rules-liquidity-pool"
+import { DeFi7RulesLiquidityPool } from "./defi-7-rules-liquidity-pool"
 import type { JSX } from "react"
 
 // Map of module slugs to their content components
@@ -17,7 +17,7 @@ const moduleContentMap = {
   "defi-as-a-business": DeFiAsABusiness,
   "defi-liquidity-pools": DeFiLiquidityPools,
   "defi-entering-first-liquidity-pool": DeFiEnteringLiquidityPool,
-  "defi-7-rules-liquidity-pool": Defi7RulesLiquidityPool,
+  "defi-7-rules-liquidity-pool": DeFi7RulesLiquidityPool,
 }
 
 // Direct module access map to handle cases where moduleContentMap lookup fails
@@ -25,7 +25,7 @@ const directModules = {
   DeFiAsABusiness,
   DeFiLiquidityPools,
   DeFiEnteringLiquidityPool,
-  Defi7RulesLiquidityPool,
+  DeFi7RulesLiquidityPool,
   BlockchainBasics,
   BlockchainFundamentals,
   DeFiLendingProtocols,
