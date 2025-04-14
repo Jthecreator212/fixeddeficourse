@@ -11,7 +11,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const module = getModuleBySlug(params.slug)
+  const slug = params.slug
+  const module = getModuleBySlug(slug)
 
   if (!module) {
     return {
@@ -26,7 +27,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function ModulePage({ params }: { params: { slug: string } }) {
-  const module = getModuleBySlug(params.slug)
+  const slug = params.slug
+  const module = getModuleBySlug(slug)
 
   if (!module) {
     notFound()
@@ -37,10 +39,10 @@ export default async function ModulePage({ params }: { params: { slug: string } 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
         <div className="md:col-span-3">
           <h1 className="mb-6 text-3xl font-bold">{module.title}</h1>
-          <ModuleContent moduleSlug={params.slug} />
+          <ModuleContent moduleSlug={slug} />
         </div>
         <div className="md:col-span-1">
-          <ModuleNavigation currentSlug={params.slug} />
+          <ModuleNavigation currentSlug={slug} />
         </div>
       </div>
     </div>
