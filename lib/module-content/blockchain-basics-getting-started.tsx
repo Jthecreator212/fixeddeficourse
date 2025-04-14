@@ -270,8 +270,8 @@ function RenderTheory() {
         {/* Benefits and Risks */}
         <div className="grid gap-6 sm:grid-cols-2">
           {/* Benefits Section */}
-          <div className="bg-gradient-to-br from-green-100/30 to-green-50/10 dark:from-green-900/20 dark:to-green-800/10 p-6 rounded-xl border border-green-200/30 dark:border-green-900/30">
-            <h3 className="text-xl font-bold mb-4 flex items-center text-green-700 dark:text-green-400">
+          <div className="bg-gradient-to-br from-primary/15 via-green-400/10 to-primary/5 dark:from-primary/20 dark:via-green-500/10 dark:to-primary/5 p-6 rounded-xl border border-primary/20 dark:border-primary/20">
+            <h3 className="text-xl font-bold mb-4 flex items-center text-primary dark:text-primary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 mr-2"
@@ -288,35 +288,35 @@ function RenderTheory() {
             </h3>
             <ul className="space-y-3">
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Complete Control:</strong> You have full authority over your funds with no third-party 
                   interference or potential account freezes.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Protection from Exchange Hacks:</strong> Your assets are protected from the security 
                   vulnerabilities of centralized exchanges.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Enhanced Privacy:</strong> Self-custody typically offers greater privacy than keeping 
                   funds on exchanges where KYC is required.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Censorship Resistance:</strong> No one can prevent you from accessing or using your 
                   crypto assets in any way you choose.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Global Access:</strong> Access your funds from anywhere in the world with an internet 
                   connection, without geographical restrictions.
@@ -326,8 +326,8 @@ function RenderTheory() {
           </div>
 
           {/* Risks Section */}
-          <div className="bg-gradient-to-br from-red-100/30 to-red-50/10 dark:from-red-900/20 dark:to-red-800/10 p-6 rounded-xl border border-red-200/30 dark:border-red-900/30">
-            <h3 className="text-xl font-bold mb-4 flex items-center text-red-700 dark:text-red-400">
+          <div className="bg-gradient-to-br from-purple-400/15 via-primary/10 to-background dark:from-purple-600/20 dark:via-primary/15 dark:to-background p-6 rounded-xl border border-primary/20 dark:border-primary/20">
+            <h3 className="text-xl font-bold mb-4 flex items-center text-primary dark:text-primary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 mr-2"
@@ -344,35 +344,35 @@ function RenderTheory() {
             </h3>
             <ul className="space-y-3">
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>No Recovery Option:</strong> If you lose your seed phrase or private keys, there's no 
                   "forgot password" option—your funds are permanently lost.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Security Responsibility:</strong> You are solely responsible for protecting your keys from 
                   theft, hacking, or physical damage.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Technical Complexity:</strong> Managing private keys securely requires some technical 
                   knowledge, which can be challenging for beginners.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Transaction Errors:</strong> A simple mistake, like sending funds to the wrong address, is 
                   irreversible and can result in permanent loss.
                 </span>
               </li>
               <li className="flex">
-                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
                 <span className="text-sm">
                   <strong>Phishing Vulnerabilities:</strong> Self-custody wallets are prime targets for sophisticated 
                   phishing attacks designed to steal your credentials.
