@@ -28,18 +28,18 @@ export function ModuleContent({ moduleSlug }: ModuleContentProps) {
 
   return (
     <Tabs defaultValue="theory" value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="mb-4">
+      <TabsList className="mb-6">
         <TabsTrigger value="theory">Theory</TabsTrigger>
         <TabsTrigger value="video">Videos</TabsTrigger>
         <TabsTrigger value="quiz">Quick Quiz</TabsTrigger>
       </TabsList>
       <TabsContent value="theory" className="mt-0">
-        <div className="rounded-lg">
+        <div className="rounded-lg border p-6">
           <ModuleContentComponent.renderTheory />
         </div>
       </TabsContent>
       <TabsContent value="video" className="mt-0">
-        <div className="rounded-lg">
+        <div className="rounded-lg border p-6">
           <h2 className="text-2xl font-bold mb-4">{ModuleContentComponent.video.title}</h2>
           <p className="mb-6 text-muted-foreground">{ModuleContentComponent.video.description}</p>
           <div className="aspect-video overflow-hidden rounded-lg">
@@ -54,7 +54,7 @@ export function ModuleContent({ moduleSlug }: ModuleContentProps) {
         </div>
       </TabsContent>
       <TabsContent value="quiz" className="mt-0">
-        <div className="rounded-lg">
+        <div className="rounded-lg border p-6">
           <ModuleContentComponent.renderQuiz />
         </div>
       </TabsContent>
