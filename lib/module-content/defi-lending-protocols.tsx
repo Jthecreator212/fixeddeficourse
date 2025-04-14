@@ -4,7 +4,7 @@ import { useState } from "react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, XCircle } from "lucide-react"
+import { CheckCircle, XCircle, AlertTriangle, Lightbulb, TrendingUp } from "lucide-react"
 import type { ModuleContentInterface, QuizQuestion } from "./index"
 
 // Define the video for this module
@@ -77,6 +77,58 @@ const quizQuestions: QuizQuestion[] = [
 function RenderTheory() {
   return (
     <div>
+      {/* Introduction Hook */}
+      <div className="bg-gradient-to-br from-primary/20 via-primary/10 to-background p-6 rounded-xl border border-primary/30 shadow-lg relative overflow-hidden mb-8">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/10 rounded-full -ml-8 -mb-8 blur-xl"></div>
+
+        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div className="bg-primary/20 p-4 rounded-full flex items-center justify-center">
+            <svg
+              className="h-10 w-10 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+
+          <div className="flex-1">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+              Unlocking Capital Efficiency
+            </h2>
+            <p className="text-lg relative">
+              <span className="bg-primary/10 px-2 py-1 rounded font-medium">Borrow and lend without banks.</span> DeFi 
+              lending protocols have revolutionized how users can put their crypto assets to work, creating new 
+              opportunities for yield generation and liquidity.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Collateralization
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Liquidations
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Interest Rates
+              </span>
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
+                Yield Strategies
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="prose dark:prose-invert max-w-none">
         <div
           dangerouslySetInnerHTML={{
@@ -123,7 +175,185 @@ function RenderTheory() {
       </div>
 
       <div className="mt-10 space-y-10">
-        {/* Additional content specific to DeFi lending protocols could be added here */}
+        {/* Benefits and Risks */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Benefits and Risks of DeFi Lending</h2>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {/* Benefits Section */}
+            <div className="bg-green-950/20 p-6 rounded-lg border border-green-800/20">
+              <div className="flex items-center mb-4">
+                <CheckCircle className="h-6 w-6 text-green-500 mr-2" />
+                <h3 className="text-xl font-semibold">Benefits</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex">
+                  <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                  <div>
+                    <span className="font-medium">Permissionless Access:</span> Anyone with an internet connection and crypto assets can participate without approval from a central authority.
+                  </div>
+                </li>
+                <li className="flex">
+                  <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                  <div>
+                    <span className="font-medium">Higher Yields:</span> Lenders often earn significantly higher interest rates compared to traditional financial institutions.
+                  </div>
+                </li>
+                <li className="flex">
+                  <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                  <div>
+                    <span className="font-medium">Transparency:</span> All transactions and protocol rules are visible on the blockchain, creating trust through verifiability rather than reputation.
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Risks Section */}
+            <div className="bg-red-950/20 p-6 rounded-lg border border-red-800/20">
+              <div className="flex items-center mb-4">
+                <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
+                <h3 className="text-xl font-semibold">Risks</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex">
+                  <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                  <div>
+                    <span className="font-medium">Smart Contract Vulnerabilities:</span> Code bugs can lead to funds being stolen or locked permanently in the protocol.
+                  </div>
+                </li>
+                <li className="flex">
+                  <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                  <div>
+                    <span className="font-medium">Liquidation Risk:</span> Market volatility can trigger automatic liquidations, potentially resulting in losses greater than in traditional margin trading.
+                  </div>
+                </li>
+                <li className="flex">
+                  <div className="mr-2 mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                  <div>
+                    <span className="font-medium">Oracle Failures:</span> Price feeds that determine collateral values can be manipulated or experience technical failures.
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Major Lending Protocols */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Major DeFi Lending Protocols</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="bg-secondary/50 p-5 rounded-lg">
+              <h3 className="font-semibold mb-2">Aave</h3>
+              <p className="text-sm text-muted-foreground mb-2">Multi-asset liquidity protocol with variable and stable interest rates</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Flash Loans</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Multiple Markets</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Governance</span>
+              </div>
+            </div>
+
+            <div className="bg-secondary/50 p-5 rounded-lg">
+              <h3 className="font-semibold mb-2">Compound</h3>
+              <p className="text-sm text-muted-foreground mb-2">Algorithmically managed lending protocol</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">COMP Token</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">DAO Governance</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Utilization Curve</span>
+              </div>
+            </div>
+
+            <div className="bg-secondary/50 p-5 rounded-lg">
+              <h3 className="font-semibold mb-2">MakerDAO</h3>
+              <p className="text-sm text-muted-foreground mb-2">Decentralized stablecoin issuer through collateralized debt</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">DAI Stablecoin</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Vaults</span>
+                <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Stability Fees</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Use Cases */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Practical Lending Strategies</h2>
+          <div className="space-y-4">
+            <div className="bg-secondary/50 p-5 rounded-lg flex gap-4">
+              <div className="bg-background rounded-full p-3 h-fit">
+                <Lightbulb className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Earning Passive Income</h3>
+                <p className="text-muted-foreground">
+                  Deposit stablecoins like USDC or DAI into lending protocols to earn consistent interest rates. This strategy minimizes volatility risk while generating yield that typically exceeds traditional savings accounts.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-secondary/50 p-5 rounded-lg flex gap-4">
+              <div className="bg-background rounded-full p-3 h-fit">
+                <Lightbulb className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Leveraged Long Positions</h3>
+                <p className="text-muted-foreground">
+                  Deposit ETH as collateral, borrow stablecoins, and use those to purchase more ETH. This amplifies exposure to ETH price movements, but requires careful monitoring of collateralization ratios to avoid liquidation.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-secondary/50 p-5 rounded-lg flex gap-4">
+              <div className="bg-background rounded-full p-3 h-fit">
+                <Lightbulb className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Yield Farming with Borrowed Assets</h3>
+                <p className="text-muted-foreground">
+                  Borrow an asset with a low interest rate, then deposit it in another protocol offering higher yields. This spread can generate profits if the yield differential exceeds the borrowing cost.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Looking Ahead */}
+        <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-6 rounded-xl">
+          <div className="flex items-center mb-4">
+            <TrendingUp className="h-6 w-6 text-primary mr-2" />
+            <h2 className="text-2xl font-bold">The Future of DeFi Lending</h2>
+          </div>
+          <p className="mb-4">
+            DeFi lending protocols continue to evolve rapidly, with several key trends emerging:
+          </p>
+          <ul className="space-y-2 mb-4">
+            <li className="flex items-start">
+              <div className="mr-2 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
+              <span>
+                <strong>Under-collateralized Lending:</strong> New protocols are exploring reputation-based or identity-based systems to enable loans without requiring full collateralization, making DeFi lending more accessible.
+              </span>
+            </li>
+            <li className="flex items-start">
+              <div className="mr-2 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
+              <span>
+                <strong>Real-World Asset Integration:</strong> The tokenization of real-world assets like real estate and stocks will expand the collateral types available in DeFi lending markets.
+              </span>
+            </li>
+            <li className="flex items-start">
+              <div className="mr-2 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
+              <span>
+                <strong>Cross-chain Lending:</strong> Protocols are developing technologies to enable lending and borrowing across different blockchains, increasing capital efficiency and market depth.
+              </span>
+            </li>
+            <li className="flex items-start">
+              <div className="mr-2 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
+              <span>
+                <strong>Institutional Adoption:</strong> Traditional financial institutions are beginning to integrate with DeFi lending protocols, bringing increased liquidity and mainstream credibility.
+              </span>
+            </li>
+          </ul>
+          <p className="text-lg font-medium">
+            As these innovations mature, DeFi lending will continue to challenge traditional financial systems by offering more efficient, transparent, and accessible financial services to users worldwide.
+          </p>
+        </div>
       </div>
     </div>
   )
