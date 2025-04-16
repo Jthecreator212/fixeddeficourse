@@ -81,12 +81,23 @@ const moduleMetadataMap: Record<string, ModuleMetadata> = {
 
 // Function to get all module metadata
 export function getAllModuleMetadata(): ModuleMetadata[] {
-  return Object.values(moduleMetadataMap)
+  console.log("📚 [Module Registry] Getting all module metadata");
+  const modules = Object.values(moduleMetadataMap);
+  console.log(`📚 [Module Registry] Found ${modules.length} modules:`, modules.map(m => m.slug));
+  return modules;
 }
 
 // Function to get module metadata by slug
 export function getModuleMetadata(moduleSlug: string): ModuleMetadata | undefined {
-  return moduleMetadataMap[moduleSlug]
+  console.log("🔍 [Module Registry] Looking up metadata for:", moduleSlug);
+  const module = moduleMetadataMap[moduleSlug];
+  if (module) {
+    console.log("✅ [Module Registry] Found metadata for:", moduleSlug);
+  } else {
+    console.log("❌ [Module Registry] No metadata found for:", moduleSlug);
+    console.log("📋 [Module Registry] Available slugs:", Object.keys(moduleMetadataMap));
+  }
+  return module;
 }
 
 // Function to get the appropriate module content (from lib/module-content/index.tsx)

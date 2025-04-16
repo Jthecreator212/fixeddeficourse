@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, XCircle, AlertTriangle, Lightbulb, TrendingUp } from "lucide-react"
-import type { ModuleContentInterface, QuizQuestion } from "./index"
+import type { ModuleContentInterface } from "@/lib/types"
 
 // Define the video for this module
 const video = {
@@ -15,7 +15,12 @@ const video = {
 }
 
 // Define the quiz questions for this module
-const quizQuestions: QuizQuestion[] = [
+const quizQuestions: {
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}[] = [
   {
     question: "What does DeFi stand for?",
     options: [
@@ -433,7 +438,7 @@ function RenderQuiz() {
           <h3 className="text-lg font-medium">{q.question}</h3>
 
           <RadioGroup value={selectedAnswers[qIndex]?.toString()}>
-            {q.options.map((option, oIndex) => (
+            {q.options.map((option: string, oIndex: number) => (
               <div
                 key={oIndex}
                 className={`flex items-center space-x-2 p-3 rounded-md border ${
@@ -482,9 +487,11 @@ function RenderQuiz() {
 }
 
 // Export the module content
-export const IntroductionToDeFi: ModuleContentInterface = {
+const IntroductionToDeFi: ModuleContentInterface = {
   renderTheory: RenderTheory,
   renderQuiz: RenderQuiz,
   video,
 }
+
+export default IntroductionToDeFi
 

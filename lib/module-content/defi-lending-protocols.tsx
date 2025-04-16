@@ -442,8 +442,10 @@ function RenderQuiz() {
 }
 
 // Export the module content
-export const DeFiLendingProtocols: ModuleContentInterface = {
+const DeFiLendingProtocols: ModuleContentInterface = {
   renderTheory: RenderTheory,
   renderQuiz: RenderQuiz,
   video,
 }
+
+export default DeFiLendingProtocols

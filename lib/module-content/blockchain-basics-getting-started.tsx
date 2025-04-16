@@ -4,7 +4,7 @@ import { useState } from "react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, XCircle, TrendingUp, AlertTriangle } from "lucide-react"
+import { CheckCircle, XCircle, TrendingUp, AlertTriangle, Lightbulb } from "lucide-react"
 import type { ModuleContentInterface, QuizQuestion } from "./index"
 
 // Define the video for this module
@@ -329,6 +329,48 @@ function RenderTheory() {
           </div>
         </div>
 
+        {/* Practical Use Cases - Adding New Section */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Practical Use Cases</h2>
+          <div className="space-y-4">
+            <div className="bg-secondary/50 p-5 rounded-lg flex gap-4">
+              <div className="bg-background rounded-full p-3 h-fit">
+                <Lightbulb className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Secure Storage of Crypto Assets</h3>
+                <p className="text-muted-foreground">
+                  Using hardware wallets like Ledger or Trezor provides military-grade security for storing your cryptocurrency assets, protecting them from online threats while maintaining full control of your private keys.
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-secondary/50 p-5 rounded-lg flex gap-4">
+              <div className="bg-background rounded-full p-3 h-fit">
+                <Lightbulb className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Cross-Border Transactions</h3>
+                <p className="text-muted-foreground">
+                  Self-custody wallets enable fast, low-cost international money transfers without the need for banks or remittance services, eliminating excessive fees and reducing transfer times from days to minutes.
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-secondary/50 p-5 rounded-lg flex gap-4">
+              <div className="bg-background rounded-full p-3 h-fit">
+                <Lightbulb className="h-6 w-6 text-yellow-500" />
+              </div>
+              <div>
+                <h3 className="font-semibold mb-1">Protection from Financial Instability</h3>
+                <p className="text-muted-foreground">
+                  In regions with currency instability or banking restrictions, self-custody wallets provide an alternative financial system, allowing users to preserve their wealth and maintain access to funds regardless of local economic conditions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Looking Ahead */}
         <div className="bg-gradient-to-br from-primary/20 to-primary/5 p-6 rounded-xl">
           <div className="flex items-center mb-4">
@@ -466,8 +508,10 @@ function RenderQuiz() {
 }
 
 // Export the module content
-export const BlockchainBasics: ModuleContentInterface = {
+const BlockchainBasics: ModuleContentInterface = {
   renderTheory: RenderTheory,
   renderQuiz: RenderQuiz,
   video,
 }
+
+export default BlockchainBasics

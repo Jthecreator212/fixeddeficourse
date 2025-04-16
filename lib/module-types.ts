@@ -17,15 +17,7 @@ export interface ModuleVideo {
   description: string
 }
 
-// Quiz question structure
-export interface QuizQuestion {
-  question: string
-  options: string[]
-  correctIndex: number
-  explanation: string
-}
-
-// Section types for theory content
+// Theory section types
 export type SectionType =
   | "introduction"
   | "content"
@@ -35,12 +27,20 @@ export type SectionType =
   | "looking-ahead"
   | "custom"
 
-// Structure for a theory section
+// Theory section structure
 export interface TheorySection {
   type: SectionType
   title: string
-  content: ReactNode | string
+  content: ReactNode
   className?: string
+}
+
+// Quiz question structure
+export interface QuizQuestion {
+  question: string
+  options: string[]
+  correctIndex: number
+  explanation: string
 }
 
 // Complete module content structure

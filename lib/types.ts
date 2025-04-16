@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface ModuleConfig {
   id: string;
   title: string;
@@ -59,4 +61,14 @@ export interface AdminModuleFormData {
   order: number;
   isPublished: boolean;
   content: ModuleContent;
+}
+
+export interface ModuleContentInterface {
+  video?: {
+    url: string;
+    title: string;
+    description?: string;
+  };
+  renderTheory: () => React.ReactElement;
+  renderQuiz: () => React.ReactElement;
 } 

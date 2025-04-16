@@ -116,7 +116,7 @@ function RenderTheory() {
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary">
                   Sustainability
               </span>
-              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -346,13 +346,13 @@ function RenderTheory() {
         {/* Components Section */}
         <div className="mt-10">
           <h2 className="text-2xl font-bold mb-6">Key DeFi Business Components</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-secondary/50 p-5 rounded-lg">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="bg-secondary/50 p-5 rounded-lg">
               <h3 className="font-semibold mb-2">Revenue Models</h3>
-              <p className="text-sm text-muted-foreground mb-2">
+            <p className="text-sm text-muted-foreground mb-2">
                 Different ways DeFi protocols generate and distribute value
-              </p>
-              <div className="flex flex-wrap gap-2">
+            </p>
+            <div className="flex flex-wrap gap-2">
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Transaction Fees</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Yield Farming</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Token Sales</span>
@@ -368,7 +368,7 @@ function RenderTheory() {
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Token Voting</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Proposals</span>
                 <span className="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-medium">Treasury</span>
-              </div>
+            </div>
           </div>
 
           <div className="bg-secondary/50 p-5 rounded-lg">

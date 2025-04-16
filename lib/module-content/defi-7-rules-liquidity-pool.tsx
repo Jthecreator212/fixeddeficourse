@@ -246,9 +246,10 @@ export function RenderQuiz() {
   )
 }
 
-// Export the module content
-export const DeFi7RulesLiquidityPool: ModuleContentInterface = {
+const DeFi7RulesLiquidityPool: ModuleContentInterface = {
   renderTheory: RenderTheory,
   renderQuiz: RenderQuiz,
-  video
-} 
+  video,
+}
+
+export default DeFi7RulesLiquidityPool 

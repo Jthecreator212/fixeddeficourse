@@ -25,54 +25,58 @@ export default function DirectModulePage({ params }: { params: { slug: string } 
   const [errorDetails, setErrorDetails] = useState("")
   
   useEffect(() => {
-    const slug = params.slug
-    console.log("Debug page: Loading module for slug:", slug)
-    
-    try {
-      // Try direct lookup by slug
-      const component = modules[slug as keyof typeof modules]
-      
-      if (component) {
-        console.log("Found module via direct lookup")
-        setModuleComponent(component)
-      } else {
-        // If not found, try converting slug to PascalCase
-        const pascalCaseKey = slug
-          .split('-')
-          .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-          .join('')
+    async function loadModule() {
+      try {
+        const slug = params.slug
+        console.log("Debug page: Loading module for slug:", slug)
         
-        // Try with DeFi prefix
-        const possibleKeys = [
-          pascalCaseKey,
-          `DeFi${pascalCaseKey}`,
-          pascalCaseKey.replace('Defi', 'DeFi')
-        ]
+        // Try direct lookup by slug
+        const component = modules[slug as keyof typeof modules]
         
-        let found = false
-        for (const key of possibleKeys) {
-          const directComponent = (AllModules as any)[key]
-          if (directComponent) {
-            console.log(`Found module via PascalCase key: ${key}`)
-            setModuleComponent(directComponent)
-            found = true
-            break
+        if (component) {
+          console.log("Found module via direct lookup")
+          setModuleComponent(component)
+        } else {
+          // If not found, try converting slug to PascalCase
+          const pascalCaseKey = slug
+            .split('-')
+            .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+            .join('')
+          
+          // Try with DeFi prefix
+          const possibleKeys = [
+            pascalCaseKey,
+            `DeFi${pascalCaseKey}`,
+            pascalCaseKey.replace('Defi', 'DeFi')
+          ]
+          
+          let found = false
+          for (const key of possibleKeys) {
+            const directComponent = (AllModules as any)[key]
+            if (directComponent) {
+              console.log(`Found module via PascalCase key: ${key}`)
+              setModuleComponent(directComponent)
+              found = true
+              break
+            }
+          }
+          
+          if (!found) {
+            console.error("Module not found for slug:", slug)
+            setError(true)
+            setErrorDetails(`Failed to find module for slug: ${slug}`)
           }
         }
-        
-        if (!found) {
-          console.error("Module not found for slug:", slug)
-          setError(true)
-          setErrorDetails(`Failed to find module for slug: ${slug}`)
-        }
+      } catch (err) {
+        console.error("Error loading module:", err)
+        setError(true)
+        setErrorDetails(String(err))
+      } finally {
+        setLoading(false)
       }
-    } catch (err) {
-      console.error("Error loading module:", err)
-      setError(true)
-      setErrorDetails(String(err))
-    } finally {
-      setLoading(false)
     }
+    
+    loadModule()
   }, [params.slug])
   
   if (loading) {

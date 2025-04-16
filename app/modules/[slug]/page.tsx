@@ -4,22 +4,27 @@ import { ModuleNavigation } from "@/components/module-navigation"
 import { getModuleBySlug, getModules } from "@/lib/modules"
 
 export async function generateStaticParams() {
+  console.log("🔄 [Module Page] Generating static params");
   const modules = getModules()
+  console.log(`📋 [Module Page] Found ${modules.length} modules for static generation`);
   return modules.map((module) => ({
     slug: module.slug,
   }))
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const slug = params.slug
+  const { slug } = await params
+  console.log("🔍 [Module Page] Generating metadata for slug:", slug);
   const module = getModuleBySlug(slug)
 
   if (!module) {
+    console.log("❌ [Module Page] No module found for metadata generation:", slug);
     return {
       title: "Module Not Found",
     }
   }
 
+  console.log("✅ [Module Page] Generated metadata for:", module.title);
   return {
     title: `${module.title} | DeFi Course`,
     description: module.description,
@@ -27,13 +32,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function ModulePage({ params }: { params: { slug: string } }) {
-  const slug = params.slug
+  const { slug } = await params
+  console.log("🚀 [Module Page] Rendering page for slug:", slug);
   const module = getModuleBySlug(slug)
 
   if (!module) {
+    console.log("❌ [Module Page] Module not found, showing 404:", slug);
     notFound()
   }
 
+  console.log("✅ [Module Page] Successfully loaded module:", module.title);
   return (
     <div className="content-container py-8">
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">

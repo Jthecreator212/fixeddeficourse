@@ -24,8 +24,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function QuizPage({ params }: { params: { slug: string } }) {
-  const quiz = getQuizBySlug(params.slug)
+export default async function QuizPage({ params }: { params: { slug: string } }) {
+  const slug = params.slug
+  const quiz = getQuizBySlug(slug)
 
   if (!quiz) {
     notFound()

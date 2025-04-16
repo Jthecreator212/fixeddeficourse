@@ -202,4 +202,71 @@ If module navigation doesn't work correctly, check:
 
 1. The module slug in the URL matches the module ID in the registry
 2. The module content is properly exported from its file
-3. The module is correctly registered in `
+3. The module is correctly registered in `lib/module-registry.ts`
+
+# DeFi Master Course: Module Structure Recommendations
+
+This document outlines best practices and structural improvements for maintaining and scaling the module content system. **All recommendations are designed to avoid any changes to the current frontend look and user experience.**
+
+## 📋 Module Structure Improvement Checklist
+
+- [x] 1. Enforce consistent TypeScript interfaces for all modules
+- [x] 2. Centralize and strictly type module registration
+- [x] 3. Standardize quiz question structure (use `correctIndex` everywhere)
+- [x] 4. Use consistent export patterns (`export default` for all modules)
+- [x] 5. Add automated type checking and linting for modules
+- [ ] 6. (Optional) Use subfolders for each module if the codebase grows
+- [ ] 7. Add documentation and a template/example for new modules
+
+---
+
+## 1. Enforce Consistent TypeScript Interfaces
+- All modules must implement the shared `ModuleContentInterface`.
+- Export modules as:
+  ```ts
+  const MyModule: ModuleContentInterface = { ... }
+  export default MyModule
+  ```
+
+## 2. Centralize and Strictly Type Module Registration
+- Use a single `moduleContentMap` with a `Record<ModuleSlug, ModuleContentInterface>` type.
+- Add new modules to this map for type safety and discoverability.
+
+## 3. Standardize Quiz Question Structure
+- All quiz questions must use the `correctIndex` property (not `correctAnswer`).
+- Use a shared `QuizQuestion` interface.
+
+## 4. Consistent Export Patterns
+- Use `export default` for all module content files.
+- Update imports to use default imports.
+
+## 5. Automated Type Checking and Linting
+- Run type checking:
+  ```bash
+  pnpm tsc --noEmit
+  ```
+- Run linting:
+  ```bash
+  pnpm lint
+  ```
+- Add to CI or as a pre-commit hook for best results.
+
+## 6. (Optional) Directory Structure for Large Scale
+- If the number of modules grows, use subfolders per module:
+  ```
+  lib/module-content/
+    introduction-to-defi/
+      index.tsx
+      quiz.ts
+      theory.tsx
+    ...
+  ```
+
+## 7. Documentation and Module Template
+- Add a `TEMPLATE.tsx` in `lib/module-content/` as a starting point for new modules.
+- Add a `README.md` in `lib/module-content/` with instructions for creating new modules, required structure, and best practices.
+
+---
+
+**Next Steps:**
+- [ ] Add a module template/example and documentation for contributors.

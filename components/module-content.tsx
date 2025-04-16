@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getModuleContent } from "@/lib/module-content"
+import { AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { AlertTriangle } from "lucide-react"
+import { getModuleContent } from "@/lib/module-content"
+import type { ModuleContentInterface } from "@/lib/types"
 
 interface ModuleContentProps {
   moduleSlug: string
@@ -12,51 +13,105 @@ interface ModuleContentProps {
 
 export function ModuleContent({ moduleSlug }: ModuleContentProps) {
   const [activeTab, setActiveTab] = useState("theory")
-  const ModuleContentComponent = getModuleContent(moduleSlug)
+  const [moduleContent, setModuleContent] = useState<ModuleContentInterface | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  if (!ModuleContentComponent) {
+  useEffect(() => {
+    console.log("🔍 [ModuleContent] Starting module load for:", moduleSlug)
+    console.log("📦 [ModuleContent] Component props:", { moduleSlug })
+
+    try {
+      const content = getModuleContent(moduleSlug)
+      console.log("📦 [ModuleContent] Module content result:", {
+        exists: !!content,
+        type: typeof content,
+        keys: content ? Object.keys(content) : [],
+        hasVideo: !!content?.video,
+        hasRenderTheory: !!content?.renderTheory,
+        hasRenderQuiz: !!content?.renderQuiz,
+        videoUrl: content?.video?.url,
+        videoTitle: content?.video?.title
+      })
+
+      if (!content) {
+        const errorMsg = `Module content is null or undefined for slug: ${moduleSlug}`
+        console.error("❌ [ModuleContent] Module not found:", {
+          moduleSlug,
+          error: errorMsg,
+          stack: new Error().stack
+        })
+        setError(errorMsg)
+        return
+      }
+
+      setModuleContent(content)
+      console.log("✅ [ModuleContent] Successfully loaded module content:", {
+        moduleSlug,
+        hasVideo: !!content.video,
+        hasTheory: !!content.renderTheory,
+        hasQuiz: !!content.renderQuiz
+      })
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Unknown error occurred"
+      console.error("❌ [ModuleContent] Error loading module:", {
+        moduleSlug,
+        error: errorMsg,
+        stack: err instanceof Error ? err.stack : undefined
+      })
+      setError(errorMsg)
+    }
+  }, [moduleSlug])
+
+  if (error) {
     return (
       <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Module Content Not Found</AlertTitle>
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
         <AlertDescription>
-          The content for this module could not be found. Please try another module or contact support.
+          {error}
+          <div className="mt-2 text-sm text-muted-foreground">
+            Please try refreshing the page or contact support if the issue persists.
+          </div>
         </AlertDescription>
       </Alert>
     )
   }
 
+  if (!moduleContent) {
+    return (
+      <Alert>
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Loading</AlertTitle>
+        <AlertDescription>Loading module content...</AlertDescription>
+      </Alert>
+    )
+  }
+
   return (
-    <Tabs defaultValue="theory" value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="mb-4">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="theory">Theory</TabsTrigger>
-        <TabsTrigger value="video">Videos</TabsTrigger>
-        <TabsTrigger value="quiz">Quick Quiz</TabsTrigger>
+        <TabsTrigger value="video">Video</TabsTrigger>
+        <TabsTrigger value="quiz">Quiz</TabsTrigger>
       </TabsList>
-      <TabsContent value="theory" className="mt-0">
-        <div className="rounded-lg border p-6">
-          <ModuleContentComponent.renderTheory />
-        </div>
+      <TabsContent value="theory">
+        {moduleContent.renderTheory && <moduleContent.renderTheory />}
       </TabsContent>
-      <TabsContent value="video" className="mt-0">
-        <div className="rounded-lg border p-6">
-          <h2 className="text-2xl font-bold mb-4">{ModuleContentComponent.video.title}</h2>
-          <p className="mb-6 text-muted-foreground">{ModuleContentComponent.video.description}</p>
-          <div className="aspect-video overflow-hidden rounded-lg">
+      <TabsContent value="video">
+        {moduleContent.video && (
+          <div className="aspect-video w-full">
             <iframe
-              src={ModuleContentComponent.video.url}
-              title={ModuleContentComponent.video.title}
+              src={moduleContent.video.url}
+              title={moduleContent.video.title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              className="w-full h-full"
-            ></iframe>
+              className="h-full w-full rounded-lg"
+            />
           </div>
-        </div>
+        )}
       </TabsContent>
-      <TabsContent value="quiz" className="mt-0">
-        <div className="rounded-lg border p-6">
-          <ModuleContentComponent.renderQuiz />
-        </div>
+      <TabsContent value="quiz">
+        {moduleContent.renderQuiz && <moduleContent.renderQuiz />}
       </TabsContent>
     </Tabs>
   )
