@@ -33,7 +33,13 @@ const formSchema = z.object({
   content: z.string().optional(),
 })
 
-export function CourseForm({ course = null }) {
+type Course = z.infer<typeof formSchema> & { id: string }
+
+interface CourseFormProps {
+  course?: Course | null
+}
+
+export function CourseForm({ course = null }: CourseFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -63,7 +69,7 @@ export function CourseForm({ course = null }) {
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       // Redirect to courses page
-      router.push("/admin/courses")
+      router.push("/dashboard/admin/courses")
     } catch (error) {
       console.error("Error submitting form:", error)
     } finally {
@@ -278,7 +284,7 @@ export function CourseForm({ course = null }) {
         </Tabs>
 
         <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => router.push("/admin/courses")}>
+          <Button type="button" variant="outline" onClick={() => router.push("/dashboard/admin/courses")}>
             Cancel
           </Button>
           <Button type="submit" disabled={isSubmitting}>

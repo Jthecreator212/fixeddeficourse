@@ -22,11 +22,11 @@ export function ModeToggle() {
     <Button
       variant="outline"
       size="icon"
-      className="w-9 h-9 border-primary/20 bg-background"
+      className="w-9 h-9 border-primary/20 bg-background hover:bg-gray-800"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
     >
-      {theme === "dark" ? <Moon className="h-5 w-5 text-blue-500" /> : <Sun className="h-5 w-5 text-yellow-500" />}
+      {theme === "dark" ? <Moon className="h-5 w-5 text-[#8a70d6]" /> : <Sun className="h-5 w-5 text-yellow-500" />}
     </Button>
   )
 }

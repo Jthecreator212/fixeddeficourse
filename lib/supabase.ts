@@ -1,142 +1,41 @@
-import { createClient } from "@supabase/supabase-js"
-import { Database } from './database.types'
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import type { Database as SupabaseDatabase } from './database.types'
+import { logger } from './logger'
 
 // Type definitions for our database tables
-export type Database = {
-  public: {
-    Tables: {
-      users: {
-        Row: {
-          id: string
-          email: string
-          full_name: string
-          created_at: string
-          updated_at: string
-          avatar_url: string | null
-        }
-        Insert: {
-          id?: string
-          email: string
-          full_name?: string
-          created_at?: string
-          updated_at?: string
-          avatar_url?: string | null
-        }
-        Update: {
-          id?: string
-          email?: string
-          full_name?: string
-          created_at?: string
-          updated_at?: string
-          avatar_url?: string | null
-        }
-      }
-      module_progress: {
-        Row: {
-          id: string
-          user_id: string
-          module_slug: string
-          completed: boolean
-          quiz_score: number | null
-          completed_sections: string[]
-          last_accessed: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          module_slug: string
-          completed?: boolean
-          quiz_score?: number | null
-          completed_sections?: string[]
-          last_accessed?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          module_slug?: string
-          completed?: boolean
-          quiz_score?: number | null
-          completed_sections?: string[]
-          last_accessed?: string
-          created_at?: string
-          updated_at?: string
-        }
-      }
-      certificates: {
-        Row: {
-          id: string
-          user_id: string
-          course_id: string
-          issued_at: string
-          certificate_url: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          course_id: string
-          issued_at?: string
-          certificate_url: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          course_id?: string
-          issued_at?: string
-          certificate_url?: string
-          created_at?: string
-        }
-      }
-    }
-  }
-}
+export type Database = SupabaseDatabase
 
-// Check if we're in a browser environment
-const isBrowser = typeof window !== "undefined"
-
-// Get Supabase URL and key with fallbacks
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-if (!supabaseUrl) {
-  throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_URL')
-}
-if (!supabaseAnonKey) {
-  throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_ANON_KEY')
-}
-
-// Create the Supabase client
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: isBrowser,
-    autoRefreshToken: isBrowser,
-  },
-})
-
-// Create a server-side client with admin privileges
-export const getServiceSupabase = () => {
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseServiceKey) {
-    throw new Error('Missing env.SUPABASE_SERVICE_ROLE_KEY')
-  }
-
-  return createClient<Database>(supabaseUrl, supabaseServiceKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
+// Helper function to check if Supabase is properly configured
+export const isSupabaseConfigured = () => {
+  const isConfigured = Boolean(supabaseUrl && supabaseAnonKey)
+  logger.debug("Supabase configuration check", {
+    context: "SupabaseClient",
+    data: { 
+      isConfigured, 
+      hasUrl: !!supabaseUrl, 
+      hasKey: !!supabaseAnonKey,
+      urlLength: supabaseUrl?.length,
+      keyLength: supabaseAnonKey?.length,
+      env: process.env.NODE_ENV
+    }
   })
+  return isConfigured
 }
 
 // Create a dummy client for development/preview when keys aren't available
 const createDummyClient = () => {
-  console.warn("Using dummy Supabase client. Authentication and database features will not work.")
+  logger.warn("Using dummy Supabase client", {
+    context: "SupabaseClient",
+    data: { 
+      reason: "Authentication and database features will not work",
+      env: process.env.NODE_ENV,
+      hasUrl: !!supabaseUrl,
+      hasKey: !!supabaseAnonKey
+    }
+  })
 
   // Return a mock client with no-op methods
   return {
@@ -157,45 +56,23 @@ const createDummyClient = () => {
   } as any
 }
 
-// Create a function to get the Supabase client
-export const getSupabaseClient = () => {
-  // Check if we have the required configuration
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn("Supabase URL or key is missing. Using dummy client.")
+// Create a client-side Supabase instance
+export const createBrowserClient = () => {
+  if (!isSupabaseConfigured()) {
     return createDummyClient()
   }
-
-  // Create and return the real client
-  return createClient<Database>(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: isBrowser,
-      autoRefreshToken: isBrowser,
-    },
+  
+  logger.debug("Creating browser Supabase client", {
+    context: "SupabaseClient",
+    data: {
+      env: process.env.NODE_ENV,
+      hasUrl: !!supabaseUrl,
+      hasKey: !!supabaseAnonKey
+    }
   })
+  
+  return createClientComponentClient<Database>()
 }
 
 // Export a singleton instance for convenience
-export const supabaseSingleton = getSupabaseClient()
-
-// Create a server-side client with admin privileges
-export const createServerSupabaseClient = () => {
-  const supabaseServerUrl = process.env.SUPABASE_URL || supabaseUrl
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-  if (!supabaseServerUrl || !supabaseServiceKey) {
-    console.warn("Server Supabase URL or service key is missing. Using dummy client.")
-    return createDummyClient()
-  }
-
-  return createClient<Database>(supabaseServerUrl, supabaseServiceKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
-  })
-}
-
-// Helper function to check if Supabase is properly configured
-export const isSupabaseConfigured = () => {
-  return !!supabaseUrl && !!supabaseAnonKey
-}
+export const supabase = createBrowserClient()

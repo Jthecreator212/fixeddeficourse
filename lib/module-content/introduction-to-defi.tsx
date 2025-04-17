@@ -14,75 +14,6 @@ const video = {
   description: "Watch this video tutorial to learn more about DeFi concepts covered in this module.",
 }
 
-// Define the quiz questions for this module
-const quizQuestions: {
-  question: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
-}[] = [
-  {
-    question: "What does DeFi stand for?",
-    options: [
-      "Digital Finance",
-      "Decentralized Finance",
-      "Distributed Financial Infrastructure",
-      "Direct Finance Investment",
-    ],
-    correctIndex: 1,
-    explanation:
-      "DeFi stands for Decentralized Finance, which refers to financial applications built on blockchain technology that don't rely on centralized intermediaries like banks or brokerages.",
-  },
-  {
-    question: "Which of the following is a key advantage of DeFi over traditional finance?",
-    options: [
-      "Government insurance on deposits",
-      "Customer service call centers",
-      "Permissionless access for anyone with an internet connection",
-      "Lower volatility in asset prices",
-    ],
-    correctIndex: 2,
-    explanation:
-      "One of the main advantages of DeFi is its permissionless nature - anyone with an internet connection can access DeFi services regardless of their location, income level, or social status. Traditional finance often has barriers to entry like minimum balances, credit checks, or geographic limitations.",
-  },
-  {
-    question: "What are smart contracts in the context of DeFi?",
-    options: [
-      "Legal agreements written by lawyers",
-      "Self-executing code that automatically enforces the terms of an agreement",
-      "Insurance policies for cryptocurrency investments",
-      "Contracts that require government approval",
-    ],
-    correctIndex: 1,
-    explanation:
-      "Smart contracts are self-executing code that automatically enforce and execute the terms of an agreement when predefined conditions are met. They are the backbone of DeFi applications, enabling trustless transactions without intermediaries.",
-  },
-  {
-    question: "Which of the following is NOT a common component of the DeFi ecosystem?",
-    options: [
-      "Decentralized Exchanges (DEXs)",
-      "Lending Protocols",
-      "Central Bank Digital Currencies (CBDCs)",
-      "Yield Farming Platforms",
-    ],
-    correctIndex: 2,
-    explanation:
-      "Central Bank Digital Currencies (CBDCs) are not part of the DeFi ecosystem. They are digital versions of national currencies issued and controlled by central banks, which goes against the decentralized nature of DeFi. The other options - DEXs, lending protocols, and yield farming platforms - are all key components of DeFi.",
-  },
-  {
-    question: "What is a significant risk associated with DeFi?",
-    options: [
-      "Smart contract vulnerabilities that could lead to loss of funds",
-      "Too much regulatory oversight",
-      "Slow transaction processing times",
-      "Limited availability of assets to trade",
-    ],
-    correctIndex: 0,
-    explanation:
-      "Smart contract vulnerabilities are a significant risk in DeFi. If there are bugs or security flaws in the code of a DeFi protocol, it could potentially be exploited by attackers, leading to loss of user funds. This has happened multiple times in the history of DeFi, resulting in millions of dollars in losses.",
-  },
-]
-
 // Component to render the theory content
 function RenderTheory() {
   return (
@@ -404,94 +335,190 @@ function RenderTheory() {
   )
 }
 
-// Component to render the quiz
+// Component to render the quiz content
 function RenderQuiz() {
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([])
-  const [checkedAnswers, setCheckedAnswers] = useState<boolean[]>([])
-  const [showExplanations, setShowExplanations] = useState<boolean[]>([])
+  const [showResults, setShowResults] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleAnswerSelect = (questionIndex: number, answerIndex: number) => {
-    const newSelectedAnswers = [...selectedAnswers]
-    newSelectedAnswers[questionIndex] = answerIndex
-    setSelectedAnswers(newSelectedAnswers)
+  interface QuizQuestion {
+    question: string
+    options: string[]
+    correctIndex: number
+    explanation: string
   }
 
-  const handleCheckAnswer = (questionIndex: number) => {
-    const newCheckedAnswers = [...checkedAnswers]
-    newCheckedAnswers[questionIndex] = true
-    setCheckedAnswers(newCheckedAnswers)
+  const quizQuestions: QuizQuestion[] = [
+    {
+      question: "What is the primary advantage of DeFi over traditional finance?",
+      options: [
+        "Higher interest rates",
+        "No need for intermediaries",
+        "Better customer service",
+        "More physical branches"
+      ],
+      correctIndex: 1,
+      explanation: "DeFi eliminates intermediaries by using smart contracts on blockchain networks, allowing direct peer-to-peer transactions."
+    },
+    {
+      question: "What does DeFi stand for?",
+      options: [
+        "Digital Finance",
+        "Decentralized Finance",
+        "Distributed Financial Infrastructure",
+        "Direct Finance Investment",
+      ],
+      correctIndex: 1,
+      explanation:
+        "DeFi stands for Decentralized Finance, which refers to financial applications built on blockchain technology that don't rely on centralized intermediaries like banks or brokerages.",
+    },
+    {
+      question: "Which of the following is a key advantage of DeFi over traditional finance?",
+      options: [
+        "Government insurance on deposits",
+        "Customer service call centers",
+        "Permissionless access for anyone with an internet connection",
+        "Lower volatility in asset prices",
+      ],
+      correctIndex: 2,
+      explanation:
+        "One of the main advantages of DeFi is its permissionless nature - anyone with an internet connection can access DeFi services regardless of their location, income level, or social status. Traditional finance often has barriers to entry like minimum balances, credit checks, or geographic limitations.",
+    },
+    {
+      question: "What are smart contracts in the context of DeFi?",
+      options: [
+        "Legal agreements written by lawyers",
+        "Self-executing code that automatically enforces the terms of an agreement",
+        "Insurance policies for cryptocurrency investments",
+        "Contracts that require government approval",
+      ],
+      correctIndex: 1,
+      explanation:
+        "Smart contracts are self-executing code that automatically enforce and execute the terms of an agreement when predefined conditions are met. They are the backbone of DeFi applications, enabling trustless transactions without intermediaries.",
+    },
+    {
+      question: "Which of the following is NOT a common component of the DeFi ecosystem?",
+      options: [
+        "Decentralized Exchanges (DEXs)",
+        "Lending Protocols",
+        "Central Bank Digital Currencies (CBDCs)",
+        "Yield Farming Platforms",
+      ],
+      correctIndex: 2,
+      explanation:
+        "Central Bank Digital Currencies (CBDCs) are not part of the DeFi ecosystem. They are digital versions of national currencies issued and controlled by central banks, which goes against the decentralized nature of DeFi. The other options - DEXs, lending protocols, and yield farming platforms - are all key components of DeFi.",
+    },
+    {
+      question: "What is a significant risk associated with DeFi?",
+      options: [
+        "Smart contract vulnerabilities that could lead to loss of funds",
+        "Too much regulatory oversight",
+        "Slow transaction processing times",
+        "Limited availability of assets to trade",
+      ],
+      correctIndex: 0,
+      explanation:
+        "Smart contract vulnerabilities are a significant risk in DeFi. If there are bugs or security flaws in the code of a DeFi protocol, it could potentially be exploited by attackers, leading to loss of user funds. This has happened multiple times in the history of DeFi, resulting in millions of dollars in losses.",
+    },
+  ]
 
-    const newShowExplanations = [...showExplanations]
-    newShowExplanations[questionIndex] = true
-    setShowExplanations(newShowExplanations)
+  const handleAnswerSelect = (questionIndex: number, answerIndex: number): void => {
+    try {
+      const newAnswers = [...selectedAnswers]
+      newAnswers[questionIndex] = answerIndex
+      setSelectedAnswers(newAnswers)
+      setError(null) // Clear any previous errors
+    } catch (err) {
+      setError('Failed to select answer. Please try again.')
+    }
+  }
+
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      setIsSubmitting(true)
+      setError(null)
+      
+      // Validate all questions are answered
+      if (selectedAnswers.length !== quizQuestions.length) {
+        setError('Please answer all questions before submitting.')
+        return
+      }
+      
+      setShowResults(true)
+    } catch (err) {
+      setError('Failed to submit quiz. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const calculateScore = (): number => {
+    return quizQuestions.reduce((score: number, question: QuizQuestion, index: number) => {
+      return score + (selectedAnswers[index] === question.correctIndex ? 1 : 0)
+    }, 0)
   }
 
   return (
     <div className="space-y-8">
-      <h2 className="text-2xl font-bold">DeFi Knowledge Check</h2>
-      <p className="text-muted-foreground mb-6">
-        Test your understanding of decentralized finance concepts from this module.
-      </p>
-
-      {quizQuestions.map((q, qIndex) => (
-        <div key={qIndex} className="space-y-4 border-b pb-6 last:border-0">
-          <h3 className="text-lg font-medium">{q.question}</h3>
-
-          <RadioGroup value={selectedAnswers[qIndex]?.toString()}>
-            {q.options.map((option: string, oIndex: number) => (
-              <div
-                key={oIndex}
-                className={`flex items-center space-x-2 p-3 rounded-md border ${
-                  checkedAnswers[qIndex] && oIndex === q.correctIndex
-                    ? "border-green-500 bg-green-50 dark:bg-green-950/20"
-                    : checkedAnswers[qIndex] && selectedAnswers[qIndex] === oIndex
-                      ? "border-red-500 bg-red-50 dark:bg-red-950/20"
-                      : "border-border"
-                }`}
-              >
-                <RadioGroupItem
-                  value={oIndex.toString()}
-                  id={`q${qIndex}-o${oIndex}`}
-                  disabled={checkedAnswers[qIndex]}
-                  onClick={() => handleAnswerSelect(qIndex, oIndex)}
-                />
-                <Label htmlFor={`q${qIndex}-o${oIndex}`} className="flex-1 cursor-pointer">
-                  {option}
-                </Label>
-                {checkedAnswers[qIndex] && oIndex === q.correctIndex && (
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                )}
-                {checkedAnswers[qIndex] && selectedAnswers[qIndex] === oIndex && oIndex !== q.correctIndex && (
-                  <XCircle className="h-5 w-5 text-red-500" />
-                )}
+      {error && (
+        <div className="bg-red-950/20 border border-red-800/20 p-4 rounded-lg">
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
+      
+      {quizQuestions.map((question: QuizQuestion, questionIndex: number) => (
+        <div key={questionIndex} className="space-y-4">
+          <h3 className="text-lg font-semibold">{question.question}</h3>
+          <RadioGroup
+            value={selectedAnswers[questionIndex]?.toString()}
+            onValueChange={(value) => handleAnswerSelect(questionIndex, parseInt(value))}
+            disabled={showResults}
+          >
+            {question.options.map((option: string, optionIndex: number) => (
+              <div key={optionIndex} className="flex items-center space-x-2">
+                <RadioGroupItem value={optionIndex.toString()} id={`q${questionIndex}-a${optionIndex}`} />
+                <Label htmlFor={`q${questionIndex}-a${optionIndex}`}>{option}</Label>
               </div>
             ))}
           </RadioGroup>
-
-          {!checkedAnswers[qIndex] && selectedAnswers[qIndex] !== undefined && (
-            <Button onClick={() => handleCheckAnswer(qIndex)} className="mt-2">
-              Check Answer
-            </Button>
-          )}
-
-          {showExplanations[qIndex] && (
-            <div className="mt-4 p-4 bg-secondary/30 rounded-md">
-              <h4 className="font-medium mb-2">Explanation:</h4>
-              <p className="text-sm text-muted-foreground">{q.explanation}</p>
+          {showResults && (
+            <div className={`p-4 rounded-lg ${selectedAnswers[questionIndex] === question.correctIndex ? 'bg-green-950/20 border border-green-800/20' : 'bg-red-950/20 border border-red-800/20'}`}>
+              <p className="font-medium">{selectedAnswers[questionIndex] === question.correctIndex ? 'Correct!' : 'Incorrect'}</p>
+              <p className="text-sm mt-2">{question.explanation}</p>
             </div>
           )}
         </div>
       ))}
+      
+      <Button 
+        onClick={handleSubmit} 
+        className="w-full"
+        disabled={isSubmitting || showResults}
+      >
+        {isSubmitting ? 'Submitting...' : 'Check Answers'}
+      </Button>
+      
+      {showResults && (
+        <div className="text-center">
+          <p className="text-lg font-semibold">Your Score: {calculateScore()} out of {quizQuestions.length}</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            {calculateScore() === quizQuestions.length 
+              ? 'Perfect! You have a great understanding of DeFi basics.' 
+              : 'Good effort! Review the explanations to improve your understanding.'}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
 
 // Export the module content
-const IntroductionToDeFi: ModuleContentInterface = {
-  renderTheory: RenderTheory,
-  renderQuiz: RenderQuiz,
+const moduleContent: ModuleContentInterface = {
   video,
+  renderTheory: RenderTheory,
+  renderQuiz: RenderQuiz
 }
 
-export default IntroductionToDeFi
+export default moduleContent
 

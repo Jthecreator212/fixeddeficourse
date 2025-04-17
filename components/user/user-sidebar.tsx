@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Menu,
   X,
+  Palette,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
@@ -71,28 +72,33 @@ export function UserSidebar() {
       </Button>
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 w-64 transform border-r bg-background transition-transform duration-200 ease-in-out lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-30 w-64 transform border-r border-gray-800 bg-[#18181b] transition-transform duration-200 ease-in-out lg:static lg:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-full flex-col overflow-y-auto py-4">
-          <div className="px-4 py-2">
-            <h2 className="text-lg font-semibold">DeFi Master Course</h2>
+          <div className="px-6 py-4">
+            <h2 className="text-xl font-bold">DeFi Master Course</h2>
           </div>
-          <nav className="mt-8 flex-1 space-y-1 px-2">
+          <nav className="mt-6 flex-1 space-y-1 px-3">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center rounded-md px-3 py-2 text-sm font-medium",
+                  "flex items-center rounded-md px-4 py-3 text-sm font-medium transition-colors",
                   pathname === item.href
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                    ? "bg-[#8a70d6] text-white"
+                    : "text-gray-300 hover:bg-gray-800 hover:text-white",
                 )}
                 onClick={() => setIsOpen(false)}
               >
-                <item.icon className="mr-3 h-5 w-5" />
+                <item.icon className={cn(
+                  "mr-3 h-5 w-5",
+                  pathname === item.href
+                    ? "text-white"
+                    : "text-gray-400"
+                )} />
                 {item.title}
               </Link>
             ))}
